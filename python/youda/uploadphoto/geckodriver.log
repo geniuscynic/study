@@ -1,0 +1,90 @@
+1568210998135	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilebgO7kg"
+1568210998976	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568210998976	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568210998977	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568210998977	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211002005	Marionette	INFO	Listening on port 42673
+1568211002099	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:18804): dconf-WARNING **: 22:10:03.424: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+1568211008396	Marionette	INFO	Stopped listening on port 42673
+1568211016994	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileXFPhNn"
+1568211017617	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568211017617	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568211017618	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568211017618	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211019924	Marionette	INFO	Listening on port 46581
+1568211020003	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:19010): dconf-WARNING **: 22:10:21.094: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+1568211121925	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile5ELjdv"
+1568211122472	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568211122472	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568211122473	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568211122473	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211124776	Marionette	INFO	Listening on port 36175
+1568211124835	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:19235): dconf-WARNING **: 22:12:06.037: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+[Parent 19158, Gecko_IOThread] WARNING: pipe error (73): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 19158, Gecko_IOThread] WARNING: pipe error (98): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1568211287107	Marionette	INFO	Stopped listening on port 36175
+1568211291694	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilerbODCQ"
+1568211292378	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568211292379	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568211292379	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568211292380	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211294701	Marionette	INFO	Listening on port 40253
+1568211294802	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:19511): dconf-WARNING **: 22:14:55.967: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+1568211390405	Marionette	INFO	Stopped listening on port 40253
+1568211394460	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile2OHftR"
+1568211395032	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568211395033	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568211395033	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568211395033	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211397343	Marionette	INFO	Listening on port 44261
+1568211397399	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:19747): dconf-WARNING **: 22:16:38.647: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+[Parent 18932, Gecko_IOThread] WARNING: pipe error (82): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 18932, Gecko_IOThread] WARNING: pipe error (123): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1568211509348	Marionette	INFO	Stopped listening on port 46581
+1568211938363	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofiletgdz42"
+1568211939018	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568211939018	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568211939018	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568211939018	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568211941525	Marionette	INFO	Listening on port 40503
+1568211941574	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:20321): dconf-WARNING **: 22:25:42.731: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+[Parent 19671, Gecko_IOThread] WARNING: pipe error (74): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 19671, Gecko_IOThread] WARNING: pipe error (98): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1568211945082	Marionette	INFO	Stopped listening on port 44261
+1568212273232	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilegrizVS"
+1568212273887	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568212273887	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568212273888	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568212273888	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568212276251	Marionette	INFO	Listening on port 35469
+1568212276347	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:20759): dconf-WARNING **: 22:31:17.559: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=bSIaHJpHGA0QxKXTIQrYg30ZAFFUhZ1D_w3JxD5paCwCfU6ocF4UCFHT8NVB31cv74vV_yueeSnncpWN8GfFsPDVAkAIxAJcEVJGXeZf2_bhcGExYoaV5MdgAul-ze-lj3PB4L-Ms2TnWNa-W-TH-w2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
+[Parent 20684, Gecko_IOThread] WARNING: pipe error (74): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 20684, Gecko_IOThread] WARNING: pipe error (73): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1568212595234	Marionette	INFO	Stopped listening on port 35469
+[Parent 20247, Gecko_IOThread] WARNING: pipe error (81): 连接被对方重设: file /build/firefox-gS7uvX/firefox-69.0+build2/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1568213152904	Marionette	INFO	Stopped listening on port 40503
+1568293104293	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilemrBGw1"
+1568293105364	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1568293105364	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1568293105364	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1568293105364	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1568293107828	Marionette	INFO	Listening on port 37283
+1568293107914	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:13208): dconf-WARNING **: 20:58:29.230: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=ZXLR50z4LerHRVn86isNXyFktU5qDVG0_g5c4Bp37vmsm4wztaTlEjCaPfOI_rUw_yR_PoguFM6_xXfXgl7PHNBZTMa2rbdtj95jtkqDmjju4sbbUSCtSN-gEvnLhWym6stBwpJlzkptwa4k1zNuPA2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
