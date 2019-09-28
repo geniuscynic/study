@@ -88,3 +88,29 @@ JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=
 
 (/usr/lib/firefox/firefox:13208): dconf-WARNING **: 20:58:29.230: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
 JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=ZXLR50z4LerHRVn86isNXyFktU5qDVG0_g5c4Bp37vmsm4wztaTlEjCaPfOI_rUw_yR_PoguFM6_xXfXgl7PHNBZTMa2rbdtj95jtkqDmjju4sbbUSCtSN-gEvnLhWym6stBwpJlzkptwa4k1zNuPA2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
+1569509602448	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilePVevGj"
+1569509607387	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1569509607387	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1569509607387	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1569509607387	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1569509612881	Marionette	INFO	Listening on port 42391
+1569509612916	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:10743): dconf-WARNING **: 22:53:35.140: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=iMZXYXFKDuaEFXMw6vYbf1PTgUef75JJ40F0g4_vMEjr5m6Cu5W-g26Ppi5J_3B0as4huo-79ntLTbooFuvdHYjpl7g1p6y0G_JIXUKcmcBKh8ujkzShsw9cktQ2PUZya6J3BB9HhxQf7CRgDX4nSA2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
+[Parent 10627, Gecko_IOThread] WARNING: pipe error (73): 连接被对方重设: file /build/firefox-y_KX3Y/firefox-69.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 10627, Gecko_IOThread] WARNING: pipe error (100): 连接被对方重设: file /build/firefox-y_KX3Y/firefox-69.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1569509936088	Marionette	INFO	Stopped listening on port 42391
+1569596169271	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileHXaqJZ"
+1569596176837	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1569596176838	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1569596176838	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1569596176838	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+1569596188604	Marionette	INFO	Listening on port 42677
+1569596188655	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox/firefox:15627): dconf-WARNING **: 22:56:30.731: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=yS1PraR3Y32T3TieVLjErsV60BwWdPWFoqcvC8q3oCfiVCsDa0wB3_Z50_bOFB7ALo5hWOb0rwskcevInoss_ytTejPAR3Olu_bz9pNKEC2GVqFzA84HM7USrxEQCYZkFjW_g7kRzSr3msEeDnHQ4w2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
+[Parent 15423, Gecko_IOThread] WARNING: pipe error (73): 连接被对方重设: file /build/firefox-y_KX3Y/firefox-69.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 15423, Gecko_IOThread] WARNING: pipe error (74): 连接被对方重设: file /build/firefox-y_KX3Y/firefox-69.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1569597012810	Marionette	INFO	Stopped listening on port 42677

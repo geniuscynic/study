@@ -2,7 +2,9 @@ import xlrd
 import xlwt
 from xlutils.copy import copy
 import time
-from pystrich.code128 import Code128Encoder
+from datetime import date, timedelta
+
+#from pystrich.code128 import Code128Encoder
 # 1  table = data.sheets()[0]          #通过索引顺序获取
 # 2  table = data.sheet_by_index(0) #通过索引顺序获取
 # 3  table = data.sheet_by_name(u'Sheet1')#通过名称获取
@@ -38,26 +40,75 @@ def read_huizong():
     workbook = xlrd.open_workbook('huizong.xlsx')
     sheet1 = workbook.sheets()[0] 
     infos = []
-    for i in range(sheet1.nrows):
+    for i in range(1, sheet1.nrows):
         info = {
-            'name': sheet1.cell(i,0).value,
-            'sex':  sheet1.cell(i,1).value,
-            'idcard':  sheet1.cell(i,2).value,
-            'phone':  sheet1.cell(i,3).value,
-            'address':  sheet1.cell(i,4).value,
-            'fullname':  sheet1.cell(i,5).value,
-            'date':  sheet1.cell(i,6).value,
-            'referee': sheet1.cell(i,7).value,
-            'sale': sheet1.cell(i,8).value,
-            'hid': sheet1.cell(i,9).value,
-            'company': sheet1.cell(i,11).value,
-            'card': sheet1.cell(i,12).value
+            'seq': sheet1.cell(i,0).value,           #序号
+            'name': sheet1.cell(i,1).value,          #姓名
+            'sex':  sheet1.cell(i,2).value,          #性别
+            'idcard':  sheet1.cell(i,3).value,       #身份证号
+            'phone':  sheet1.cell(i,4).value,        #联系电话
+            'clothes': sheet1.cell(i,5).value,       #衣码
+            'shoes': sheet1.cell(i,6).value,         #鞋码
+            'address':  sheet1.cell(i,7).value,      #住址
+            'fullname':  sheet1.cell(i,8).value,     #全称
+            'date_mianshi':  sheet1.cell(i,9).value, #面试日期
+            'referee': sheet1.cell(i,10).value,      #来源
+            'factory': sheet1.cell(i,11).value,     #厂部
+            'sale': sheet1.cell(i,12).value,         #工资
+            'hid': sheet1.cell(i,13).value,          #马甲号
+            'company': sheet1.cell(i,14).value,      #公司
+            'date_baodao': sheet1.cell(i,15).value,  #报道日期
+            'type': sheet1.cell(i,16).value,         #性质
+            'note': sheet1.cell(i,17).value          #备注
         }
 
         infos.append(info)
 
     return infos
 
+def export_huizong(infos):
+    style = xlwt.XFStyle()
+    pattern = xlwt.Pattern()
+    pattern.pattern = xlwt.Pattern.SOLID_PATTERN
+    pattern.pattern_fore_colour = xlwt.Style.colour_map['yellow'] #设置单元格背景色为黄色
+    style.pattern = pattern
+
+    huizong = xlrd.open_workbook('template/huizong.xls', formatting_info = True)
+    #print(yuyue.sheets())
+
+    workbook = copy(huizong)
+
+    sheet1 = workbook.get_sheet(0)
+
+    for i in range(len(infos)):
+        info = infos[i]
+
+        #print(info['company'])
+        #print(info['hid'])
+        print(info['idcard'], " : ", checkBirthDate(info['idcard']))
+        #fullname = info['company'] + str(info['hid']) + info['name']
+        sheet1.write(i+1, 0, label = info['seq'],style = style)
+        sheet1.write(i+1, 1, label = info['name'],style = style)
+        sheet1.write(i+1, 2, label = info['sex'],style = style)
+        sheet1.write(i+1, 3, label = info['idcard'],style = style)
+        sheet1.write(i+1, 4, label = info['phone'],style = style)
+        sheet1.write(i+1, 5, label = info['clothes'],style = style)
+        sheet1.write(i+1, 6, label = info['shoes'],style = style)
+        sheet1.write(i+1, 7, label = info['address'],style = style)
+        sheet1.write(i+1, 8, label = info['fullname'],style = style)
+        sheet1.write(i+1, 9, label = info['date_mianshi'],style = style)
+        sheet1.write(i+1, 10, label = info['referee'],style = style)
+        sheet1.write(i+1, 11, label = info['factory'],style = style)
+        sheet1.write(i+1, 12, label = info['sale'] ,style = style)
+        sheet1.write(i+1, 13, label = info['hid'],style = style)
+        sheet1.write(i+1, 14, label = info['company'],style = style)
+        sheet1.write(i+1, 15, label = info['date_baodao'],style = style)
+        sheet1.write(i+1, 16, label = info['type'],style = style)
+        sheet1.write(i+1, 17, label = info['note'],style = style)
+    #print(i)
+
+    excelName = "{0}汇总.xls".format(time.strftime("%m.%d"))
+    workbook.save(excelName)
 
 def export_yuyue(infos):
     yuyue = xlrd.open_workbook('template/yuyue.xls', formatting_info = True)
@@ -118,7 +169,7 @@ def export_ziliao(infos):
         sheet1.write(i+1, 8, label = 'S01')
       
     #print(i)
-#S06训练组资料-培训人员
+    #S06训练组资料-培训人员
     excelName = "S01训练组资料-培训人员.xls"
     workbook.save(excelName)
 
@@ -172,7 +223,7 @@ def export_tijian(infos):
     #     sheet1.write(i+1, 8, label = 'S01')
       
     #print(i)
-#S06训练组资料-培训人员
+    #S06训练组资料-培训人员
     excelName = "tijian.xls"
     workbook.save(excelName)
 
@@ -201,8 +252,19 @@ def setOutCell(outSheet, col, row, value):
             newCell.xf_idx = previousCell.xf_idx
     # END HACK
 
-export_tijian(None)
-#export_yuyue(infos)
+def checkBirthDate(idCard):
+    year = int(idCard[6:10])
+    month = int(idCard[10:12])
+    day = int(idCard[12:14])
+    birthDate = date(year, month, day)
+    timedelta = date.today() - birthDate
+    
+    return timedelta
+
+
+#export_tijian(None)
+infos = read_huizong()
+export_huizong(infos)
 #export_ziliao(infos)
 #export_qiandao(infos)
 # encoder = Code128Encoder("690123456789")

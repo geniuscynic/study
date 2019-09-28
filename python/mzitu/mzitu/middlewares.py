@@ -6,7 +6,8 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+import logging
+from mzitu.utils import commonUtils
 
 class MzituSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -101,3 +102,36 @@ class MzituDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+
+class XimalangyaHeaderMiddleware(object):
+    # Not all methods need to be defined. If a method is not defined,
+    # scrapy acts as if the spider middleware does not modify the
+    # passed objects.
+
+   
+
+    # def process_start_requests(self, start_requests, spider):
+    #     # Called with the start requests of the spider, and works
+    #     # similarly to the process_spider_output() method, except
+    #     # that it doesn’t have a response associated.
+
+    #     # Must return only requests (not items).
+    #     ximalaya = commonUtils.ximalaya()
+        
+    #     for r in start_requests:
+    #         #logging.debug('process_start_requests')
+    #         #logging.debug(ximalaya.getSign())
+    #         if(spider.name == "ximalaya"):
+    #             r.headers["xm-sign"] = ximalaya.getSign()
+
+    #         yield r
+
+    def process_request(self, request, spider):
+        ximalaya = commonUtils.ximalaya()
+
+        if(spider.name == "ximalaya"):
+            request.headers["xm-sign"] = ximalaya.getSign()
+
+  
