@@ -1,0 +1,33 @@
+.card-footer ul.nav .nav-item {
+    padding-right: 0.5rem;
+}
+
+#header {
+    background: #ffc107;
+    padding:0;
+}
+
+#header .navbar-nav .active {
+    background: #ffe36f;
+}
+
+#header .nav-item{
+    display: flex;
+}
+
+#header .nav-item a{
+    align-self: center;
+    padding-left: 1rem;
+    padding-right: 1rem; 
+}
+
+#header .nav-item:hover{
+    background: #ffe36f;
+}
+
+
+
+#header .navbar-brand {
+    padding-top: 0;
+    padding-bottom: 0;
+}
