@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6f9181a3-5305-4569-84f6-019468c036fb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://api.ezinspections.com/services/ezUpdaterServices.asmx" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="InspSTDataSet.xsd" MetadataType="Schema" ID="456b61cd-8f68-4e4b-baf7-2dd037db45ba" SourceId="1" SourceUrl="https://api.ezinspections.com/services/ezUpdaterServices.asmx?schema=InspSTDataSet" />
+    <MetadataFile FileName="ezUpdaterServices.wsdl" MetadataType="Wsdl" ID="32ba41ae-c9bc-48ea-b5e5-c267f54675e2" SourceId="1" SourceUrl="https://api.ezinspections.com/services/ezUpdaterServices.asmx?wsdl" />
+    <MetadataFile FileName="ezUpdaterServices.disco" MetadataType="Disco" ID="efe437e2-6e35-4f0b-bb67-363313d897c1" SourceId="1" SourceUrl="https://api.ezinspections.com/services/ezUpdaterServices.asmx?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
