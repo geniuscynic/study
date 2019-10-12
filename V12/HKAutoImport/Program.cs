@@ -27,7 +27,7 @@ namespace HKAutoImport1
 
 
                 V12Import v13 = null;
-                v13 = new V12Import_PointCentral("1234");
+                v13 = new V12Import_STREAMLINE("21388");
                 v13.login();
                 v13.exportAndUpload();
 

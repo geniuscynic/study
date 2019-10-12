@@ -122,9 +122,161 @@ namespace PMSAutoImport
 
         }
 
-       
+        private string exportWorkOrders()
+        {
+            
+
+            var jsonObject = new
+            {
+                methodName = "GetWorkOrders",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+
+                    unit_id = 154138,
+                    maintenance_worker_id = 7016659,
+                    show_notes = 1
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+
+        }
+
+        private string exportMaintenanceStatuses()
+        {
+
+
+            var jsonObject = new
+            {
+                methodName = "GetMaintenanceStatuses",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+
+        }
+
+        private string UpdateWorkOrderDescription()
+        {
+
+
+            var jsonObject = new
+            {
+                methodName = "UpdateWorkOrderDescription",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    processor_id = 1,
+                    work_order_id = 7016659,
+                    description = "Update Description Example 2"
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+
+        }
+
+        private string AddHKNoteToWorkOrder()
+        {
+
+
+            var jsonObject = new
+            {
+                methodName = "AddHKNoteToWorkOrder",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    processor_id = 1,
+                    work_order_id = 7016659,
+                    message = "test AddHKNoteToWorkOrder3"
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+
+        }
+
+        private string AddPhotoToWorkOrder()
+        {
+
+
+            var jsonObject = new
+            {
+                methodName = "AddPhotoToWorkOrder",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    processor_id = 1,
+                    work_order_id = 7016659,
+                    photo_name = "test.jpg",
+                    photo_description= "dd",
+                    photo_data = "iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAACpklEQVR42u3bPVIDMQwF4BwhJSVXoKTkChyBMi0lJVehpEzLVVJScgUTJyvPW621P2GwvOu3MxogCWHyIXllbbILIewYtwcRCEhAAhKQQUACEpCADAISkIAEZBCQgAQkIIOABCRgLg5PdwGDgAvgji/3Ibw/9iLetmbIYnin14cBHsYtiDVkcjHAMTzJxL9ksxdkUTyrjJdk4dhzxCwvjVg8++LP+/3eBIz36ZjKZr1ElET89z+AWAiEEDGjuhLuHT+fz5forXUZPPl9ycxNAWLWaEB50RFp7LjcLzBGxspzxUwsWcpFAPEFyosWDI0nWJJ96ZhR8oioS3/1faBGHMPDSI9ZABhjc4CCOCf7lgRmdGk8t63cILsMRCv75DliqWLWNQeYO/OOgWLorMP1dbPDBN1UxyN+tTLRal3wH2D1i5sH1O2MnHUlJDt1z5gDbGacpTNQzpzh+yMcDm9XjPP3MTC7CGjtYzssK1IJy20KrzlAREyN8gQihpR2LXgugFK2es2TLZgFh2tj04A5RJjlXde883qogTVgDXiuF5X0nnjQ3mQQa8NzBUxnYGN7ZpVsTXjuGWg1yLnpjWRrbReg3PBwAKr7Ohyg5va6NUG6lm+uPHNgOezSk+eqATHblo6zvIYI1ZxErOzKja9w4txDPH61Bzj3erF18QghPc/MrnhT71bIXfMdlP+5X5QGvDnAuWuenjxDP9jWPNBqZaxMtEb2vat71wxs8/2BVp83J6SUvVuZ1QN6I7p38lPbtim8ZgHj2iUzQL3WCUgOU8M2N5FOeKcTvoclISKIWeJd49z0QBVbkTGQNPbqHndBddx5VLUGzu3haur7Vv0xBw5U+TkRBgEJSEACMghIQAISkEFAAhKQgAQkAgEJSEACMghIwFXGL4pi66jNesPAAAAAAElFTkSuQmCC"
+                 }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+
+        }
+
         public override string exportFile()
         {
+            //AddPhotoToWorkOrder();
+            //AddHKNoteToWorkOrder();
+            //exportMaintenanceStatuses();
+            exportWorkOrders();
             //RenewExpiredToken();
             addFile(() => exportPropertyList());
             addFile(() => exportHousekeepingCleaning());

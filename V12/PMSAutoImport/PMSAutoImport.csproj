@@ -40,9 +40,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\..\sourcecode\EZI\SourceCodeFormFiller\Dlls\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\sourcecode\EZI\SourceCode08\packages\Newtonsoft.Json.10.0.3\lib\net35\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -68,6 +68,7 @@
     <Compile Include="request\V12Import_HK_REQUEST.cs" />
     <Compile Include="request\V12Import_HK_UnitFeature.cs" />
     <Compile Include="request\V12Import_PointCentral.cs" />
+    <Compile Include="request\V12Import_HOSTFULLY.cs" />
     <Compile Include="request\V12Import_TRACK.cs" />
     <Compile Include="request\V12Import_REQUEST_BASE.cs" />
     <Compile Include="request\V12Import_RENT.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Utils\UnitFeaturesParse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="request\packages.config" />
     <None Include="Service References\ServiceReference1\ezUpdaterServices.wsdl" />

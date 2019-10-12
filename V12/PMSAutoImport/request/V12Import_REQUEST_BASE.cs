@@ -35,7 +35,7 @@ namespace PMSAutoImport
 
             importFolder = ConfigurationManager.AppSettings[companyId + "importFolder"];
 
-            if (!string.IsNullOrEmpty (importFolder ) && Directory.Exists(importFolder))
+            if (!string.IsNullOrEmpty (importFolder ) && !Directory.Exists(importFolder))
             {
                 //File.AppendAllText("Log_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\nCan't find folder");
 
