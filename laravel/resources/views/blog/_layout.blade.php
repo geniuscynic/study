@@ -13,71 +13,17 @@
     <title>@yield('title')</title>
 </head>
 
-<body>
+<body class="d-flex flex-column">
 
-    <nav id="header" class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-        <a class="navbar-brand" href="{{env('APP_URL')}}">
-                <img alt="囧人囧事" src="{{URL::asset('img/logo.jpg')}}" />
+    @include('blog.navigation')
 
-            </a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            
-            <div class="collapse navbar-collapse  align-self-stretch" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto align-self-stretch">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">最新</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">热门</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-
-    <div id="content" class="container">
+    <div id="content" class="container flex-grow-1">
         <div class="row mt-3">
             <main id="primary" class="col-md-8 col-xs-12 ">
                 @yield('content')
 
 
-                <nav aria-label="Page navigation" class="mt-3">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+
             </main>
 
             <aside id="secondary" class="col-md-4">
@@ -136,12 +82,12 @@
         </div>
     </div>
 
-    <footer class="bg-dark mt-5" >
-      <div class="container p-3 text-white">
-                Copyright 2019 , Theme Preview <span class="sep"> , </span>
-                Theme by <a href="http://www.getbeststuff.com/">Discount Promo Codes</a>
-</div>
-      
+    <footer class="bg-dark mt-5 ">
+        <div class="container p-3 text-white text-center">
+            Copyright 2019 , Theme Preview <span class="sep"> , </span>
+            Theme by <a href="http://www.getbeststuff.com/">Discount Promo Codes</a>
+        </div>
+
     </footer>
 
 
@@ -149,7 +95,7 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="{{URL::asset('js/app.js')}}">
     </script>
-    
+
 </body>
 
 </html>

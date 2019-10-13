@@ -18,7 +18,11 @@ Route::domain('laravel.local')
         ->group(function () {
 
     Route::get('/', 'IndexController@index')
-            ->name('index');
+        ->name('index');
+
+    Route::get('/archives/{id}', 'IndexController@archives')
+        ->where('id', '[0-9]+')
+        ->name('archives');
 });
 
 Route::get('/', function () {

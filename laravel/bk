@@ -1,0 +1,4 @@
+
+SELECT *, CAST(argument AS CHAR(10000) CHARACTER SET utf8) as query from mysql.general_log
+where command_type = 'Execute'
+ ORDER BY    event_time DESC

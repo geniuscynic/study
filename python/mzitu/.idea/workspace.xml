@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb6a56f0-159b-40a5-93fd-25e4f5771a82" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mzitu/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/mzitu/middlewares.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mzitu/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/mzitu/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mzitu/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mzitu/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mzitu/utils/commonUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/mzitu/utils/commonUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../youda/huizong.py" beforeDir="false" afterPath="$PROJECT_DIR$/../youda/huizong.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../youda/huizong.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../youda/huizong.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/app/Model/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/app/Model/Category.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/app/Model/CategoryTreePath.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/app/Model/CategoryTreePath.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/config/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/database/migrations/2019_09_18_135542_create_category_tree_paths_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/database/migrations/2019_09_18_135542_create_category_tree_paths_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/database/seeds/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/resources/views/blog/_layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/resources/views/blog/_layout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../laravel/resources/views/blog/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/resources/views/blog/index.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,6 +81,7 @@
       <workItem from="1566023400985" duration="4629000" />
       <workItem from="1569504982464" duration="818000" />
       <workItem from="1569506522327" duration="1060000" />
+      <workItem from="1570453446095" duration="46000" />
     </task>
     <servers />
   </component>

@@ -1,4 +1,7 @@
-.card-footer ul.nav .nav-item {
+body {
+    min-height: 1000px;
+}
+article.card ul.nav .nav-item {
     padding-right: 0.5rem;
 }
 
@@ -31,3 +34,7 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+
+/* #content {
+    flex:1;
+} */

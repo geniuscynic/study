@@ -20,6 +20,8 @@ class CreateCategoryTreePathsTable extends Migration
             $table->integer('distance');
             $table->timestamps();
         });
+
+        
     }
 
     /**
