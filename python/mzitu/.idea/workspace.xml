@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb6a56f0-159b-40a5-93fd-25e4f5771a82" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../laravel/app/Model/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/app/Model/Category.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/app/Model/CategoryTreePath.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/app/Model/CategoryTreePath.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/database/migrations/2019_09_18_135542_create_category_tree_paths_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/database/migrations/2019_09_18_135542_create_category_tree_paths_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/resources/views/blog/_layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/resources/views/blog/_layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../laravel/resources/views/blog/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../laravel/resources/views/blog/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +18,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hot" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
   </component>
   <component name="RunDashboard">
@@ -82,6 +74,8 @@
       <workItem from="1569504982464" duration="818000" />
       <workItem from="1569506522327" duration="1060000" />
       <workItem from="1570453446095" duration="46000" />
+      <workItem from="1570940480050" duration="103000" />
+      <workItem from="1570943122328" duration="34000" />
     </task>
     <servers />
   </component>

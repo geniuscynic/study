@@ -28,7 +28,7 @@ def getHotWords():
         yield new.string
         #yield new['href']
 
-def step2(words):
+def getWordUrl(words):
     url = "https://www.baidu.com/s?rtt=1&bsst=1&cl=2&word={}"
     i=0
     for word in words:
@@ -39,14 +39,34 @@ def step2(words):
         content =  getContent(currentUrl)
         soup = BeautifulSoup(content, "lxml")
         newUrl = soup.select("div.result h3.c-title a")
-        print(newUrl[0])
+        
+        yield newUrl
+        #print(newUrl[0]['href'])
 
-        if(i==2):
-            return
+        # if(i==2):
+        #     return
 
 
-urls = getHotWords()
-step2(urls)
-#url = "https://www.baidu.com/s?rtt=1&bsst=1&cl=2&word=%E6%9D%8E%E5%BF%83%E8%8D%89%E6%BA%BA%E4%BA%A1%E9%80%9A%E6%8A%A5"
+def parseUrl(url):
+    content = getContent(url, encoding='gbk')
+    soup = BeautifulSoup(content, "lxml")
+
+    title = soup.select_one("div.post_content_main h1")
+
+    post_source = soup.select_one("div.post_content_main div.post_time_source" ).stripped_strings
+
+    updateTime = repr(post_source.send(None)).replace('\\u3000来源:', '').replace("'", '')
+    souce = repr(post_source.send(None)).replace("'", '')
+
+    body_content = soup.select("div.post_content_main div.post_body div.post_text p" )
+
+    #or string in body_content:
+         #print(repr(string))
+    print(updateTime, souce, body_content)
+#words = getHotWords()
+#urls = getWordUrl(words)
+
+url = "http://ent.163.com/19/1014/09/EREJKEU900038FO9.html"
+parseUrl(url)
 #content = getContent(url)
 #print(content)
