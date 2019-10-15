@@ -133,9 +133,6 @@ namespace PMSAutoImport
                 {
                     token_key = TokenKey,
                     token_secret = TokenSecretKey,
-
-                    unit_id = 154138,
-                    maintenance_worker_id = 7016659,
                     show_notes = 1
 
                 }
@@ -276,10 +273,11 @@ namespace PMSAutoImport
             //AddPhotoToWorkOrder();
             //AddHKNoteToWorkOrder();
             //exportMaintenanceStatuses();
-            exportWorkOrders();
+            //exportWorkOrders();
             //RenewExpiredToken();
-            addFile(() => exportPropertyList());
-            addFile(() => exportHousekeepingCleaning());
+            addFile(() => exportWorkOrders());
+            //addFile(() => exportPropertyList());
+            //addFile(() => exportHousekeepingCleaning());
            // addFile(() => exportHousekeepingServicesSchedule());
             
 

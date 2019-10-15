@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 def getContent(url, encoding='utf-8'):
     headers = {
@@ -48,6 +49,15 @@ def getWordUrl(words):
 
 
 def parseUrl(url):
+    res=urlparse(url)
+    
+    dict = {
+        "ent.163.com": parse_wangyi
+    }
+
+    dict[res.netloc](url)
+
+def parse_wangyi(url):
     content = getContent(url, encoding='gbk')
     soup = BeautifulSoup(content, "lxml")
 
@@ -63,6 +73,7 @@ def parseUrl(url):
     #or string in body_content:
          #print(repr(string))
     print(updateTime, souce, body_content)
+
 #words = getHotWords()
 #urls = getWordUrl(words)
 
