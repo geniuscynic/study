@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+import hot
 
 def getContent(url, encoding='utf-8'):
     headers = {
@@ -77,7 +78,10 @@ def parse_wangyi(url):
 #words = getHotWords()
 #urls = getWordUrl(words)
 
-url = "http://ent.163.com/19/1014/09/EREJKEU900038FO9.html"
-parseUrl(url)
+#url = "http://ent.163.com/19/1014/09/EREJKEU900038FO9.html"
+#parseUrl(url)
 #content = getContent(url)
 #print(content)
+
+hot = hot.hot()
+hot.start()

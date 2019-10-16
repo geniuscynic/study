@@ -23,7 +23,7 @@ class siteBase(object):
         return response.text
 
     def _parse(self, soup):
-        pass
+        print("siteBase.parse")
 
     def start(self):
         content = self._getContent()

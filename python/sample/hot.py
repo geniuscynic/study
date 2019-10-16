@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
+from util.wangyi import wangyi
+
 class hot(object):
     __headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
@@ -9,8 +11,8 @@ class hot(object):
         'Upgrade-Insecure-Requests': '1'
     }
 
-    # dict = {
-    #     "ent.163.com": parse_wangyi
+    # sites = {
+    #     "ent.163.com": 
     # }
 
     def __init__(self):
@@ -28,17 +30,20 @@ class hot(object):
         #news = soup.find_all(name="a", text="新闻")
         news = soup.select('tr a.list-title')
 
-        print("step1")
+        print("__getHotWords")
         for new in news:
+            print("__getHotWords", new.string)
             yield new.string
             #yield new['href']
 
     def __getWordUrl(self, word):
+        print("__getWordUrl")
+
         url = "https://www.baidu.com/s?rtt=1&bsst=1&cl=2&word={}".format(word)
-        content =  self.__getContent(currentUrl)
+        content =  self.__getContent(url)
         soup = BeautifulSoup(content, "lxml")
         newUrl = soup.select("div.result h3.c-title a")
-        return newUrl
+        return newUrl[0]['href']
 
     def __getdUrlsFromWord(self, words):
         for word in words:
@@ -46,10 +51,17 @@ class hot(object):
 
     
     def __getDetail(self, url):
+        
+        sites = wangyi(url)
+        sites.start()
         pass
 
 
     def start(self):
         words = self.__getHotWords()
         urls = self.__getdUrlsFromWord(words)
+
+        for url in urls:
+            self.__getDetail(url)
     
+
