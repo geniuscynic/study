@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from util.siteBase import siteBase
+from util.log import MyLog
 
 class wangyi(siteBase):
 
@@ -10,7 +11,8 @@ class wangyi(siteBase):
         super().__init__(url)
 
     def _parse(self, soup):
-        print("site_wangyi.parse")
+        
+        MyLog.getLogger().log("site_wangyi.parse")
 
 
 

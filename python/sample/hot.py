@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 from util.wangyi import wangyi
+from util.log import MyLog
 
 class hot(object):
     __headers = {
@@ -16,6 +17,7 @@ class hot(object):
     # }
 
     def __init__(self):
+        self.i=0
         pass
 
     def __getContent(self, url, encoding='utf-8'):
@@ -30,14 +32,16 @@ class hot(object):
         #news = soup.find_all(name="a", text="新闻")
         news = soup.select('tr a.list-title')
 
-        print("__getHotWords")
+        #MyLog.getLogger().log("__getHotWords", )
+        #print("__getHotWords")
         for new in news:
-            print("__getHotWords", new.string)
+            MyLog.getLogger().log("__getHotWords", new.string)
             yield new.string
             #yield new['href']
 
     def __getWordUrl(self, word):
-        print("__getWordUrl")
+        self.i+=1
+        MyLog.getLogger().log("__getWordUrl", word)
 
         url = "https://www.baidu.com/s?rtt=1&bsst=1&cl=2&word={}".format(word)
         content =  self.__getContent(url)
