@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
-from util.wangyi import wangyi
-from util.log import MyLog
+#from util.wangyi import wangyi
+from utils import *
+import util
 
 class hot(object):
     __headers = {
@@ -32,16 +33,16 @@ class hot(object):
         #news = soup.find_all(name="a", text="新闻")
         news = soup.select('tr a.list-title')
 
-        #MyLog.getLogger().log("__getHotWords", )
+        #getLogger().debug("__getHotWords", )
         #print("__getHotWords")
         for new in news:
-            MyLog.getLogger().log("__getHotWords", new.string)
+            log.getLogger().debug("__getHotWords", new.string)
             yield new.string
             #yield new['href']
 
     def __getWordUrl(self, word):
         self.i+=1
-        MyLog.getLogger().log("__getWordUrl", word)
+        log.getLogger().debug("__getWordUrl", word)
 
         url = "https://www.baidu.com/s?rtt=1&bsst=1&cl=2&word={}".format(word)
         content =  self.__getContent(url)
@@ -55,9 +56,16 @@ class hot(object):
 
     
     def __getDetail(self, url):
-        
-        sites = wangyi(url)
-        sites.start()
+        log.getLogger().debug("__getDetail", url) 
+        site = util.create_site_factory(url)
+
+        if(site == ""):
+            log.getLogger().info("还么做parse", url) 
+            return
+
+        site.start()
+        #sites = wangyi(url)
+        #sites.start()
         pass
 
 

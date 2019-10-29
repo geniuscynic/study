@@ -27,7 +27,7 @@ namespace HKAutoImport1
 
 
                 V12Import v13 = null;
-                v13 = new SITE_ESCAPIA("21144");
+                v13 = new V12Import_STREAMLINE("21388");
                 v13.login();
                 v13.exportAndUpload();
 
@@ -69,6 +69,10 @@ namespace HKAutoImport1
                     //}
                 }
                 else if (args[0] == "20942")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "21749")
                 {
                     companyId = args[0];
                 }
@@ -117,7 +121,7 @@ namespace HKAutoImport1
                         Console.WriteLine("begin autoImport.ImportJob " + companyId);
                        // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "begin autoImport.ImportJob " + companyId);
                         v12.login();
-                        v12.exportFile();
+                        v12.exportAndUpload();
                        
                         // Run(autoImport.ImportJob4, companyId);
                        // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "end autoImport.ImportJob " + companyId);

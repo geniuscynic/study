@@ -78,8 +78,8 @@ namespace PMSAutoImport
         {
             var responseString = GetRequest(buildUrl("/WebAgency/ServiceOrder/ManageServiceOrders.aspx"));
 
-            var startDate = DateTime.Now.AddDays(-2).ToShortDateString().Replace("/", "%2F");
-            var endDate = DateTime.Now.AddDays(-1).ToShortDateString().Replace("/", "%2F");
+            var startDate = DateTime.Now.AddDays(-10).ToShortDateString().Replace("/", "%2F");
+            var endDate = DateTime.Now.AddDays(0).ToShortDateString().Replace("/", "%2F");
 
             string viewstate = GetHtmlHiddenVaule(responseString, "__VIEWSTATE");
             string viewstategenerator = GetHtmlHiddenVaule(responseString, "__VIEWSTATEGENERATOR");

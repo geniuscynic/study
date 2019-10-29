@@ -1,0 +1,1 @@
+__all__= ["log", "singleton", "wangyi", "baijiahao", "ifeng", 'sina', 'sina_new']

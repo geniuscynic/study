@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-from util.log import MyLog
+from utils.log import MyLog, getLogger
 
 class siteBase(object):
 
@@ -20,13 +20,15 @@ class siteBase(object):
 
     def _getContent(self):
         response = requests.get(self.__url, headers = self.__headers)
-        response.encoding = self._encoding
+        response.encoding = self._encoding()
         return response.text
 
     def _parse(self, soup):
-        MyLog.getLogger().log("siteBase.parse")
+        getLogger().debug("siteBase.parse")
 
     def start(self):
         content = self._getContent()
         soup = BeautifulSoup(content, "lxml")
         self._parse(soup)
+
+

@@ -135,13 +135,14 @@ namespace PMSAutoImport
             var postUrl = url + "/ServiceManagerIssues";
             var content = @"[
               {
-                'ServiceManagerIssueID': 1,
-                'Title': 'sample string 2',
-                'Description': 'test desc',
-                'Resolution': 'test res',
+                
+                'Title': 'sample string 4',
+                'Description': 'test desc4',
+                'Resolution': 'test res4',
                 'AssignedOpenDate': '2019-09-09T12:00:39',
                 'CustomerDescription': 'test custom',
-                'NoteText': 'testc note'
+                'NoteText': 'testc note',
+                'StatusID': '1'
 
               }
             ]";
@@ -239,7 +240,7 @@ namespace PMSAutoImport
            // getServiceManagerIssues(token);
            // getServiceManagerIssueWorkOrders(token);
            // getTasks(token);
-            getMoveInMoveOutReort(token);
+            saveServiceManagerIssues(token);
            // getVendors(token);
             //addFile(() => exportPropertyList());
             //addFile(() => exportHousekeepingCleaning());
