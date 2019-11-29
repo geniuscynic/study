@@ -106,7 +106,7 @@ namespace PMSAutoImport
 
             return dict;
         }
-        public override string exportFile()
+        public override string exportFile(string type)
         {
            //var token = getToken();
            // getProperties(token);

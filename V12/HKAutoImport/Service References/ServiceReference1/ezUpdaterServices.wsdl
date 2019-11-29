@@ -4,6 +4,22 @@
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
       <s:import namespace="http://tempuri.org/InspSTDataSet.xsd" />
       <s:import schemaLocation="https://api.ezinspections.com/services/ezUpdaterServices.asmx?schema=InspSTDataSet" namespace="http://tempuri.org/InspSTDataSet.xsd" />
+      <s:element name="SubmitJob">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serviceURL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="josnserdata" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authorization" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitJobResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitJobResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SendAsyncEmail">
         <s:complexType />
       </s:element>
@@ -226,6 +242,31 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="UploadHistoryPhotoByCurrentInspectionId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="attachment" type="tns:OrderAttachment" />
+            <s:element minOccurs="1" maxOccurs="1" name="inspId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="role" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="OrderAttachment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CategoryCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AttachmentBinary" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UploadHistoryPhotoByCurrentInspectionIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UploadHistoryPhotoByCurrentInspectionIdResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="CancelMBALTAWGFjobsinIL">
         <s:complexType />
       </s:element>
@@ -256,6 +297,8 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="companyId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="inspectorId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="role" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1015,6 +1058,27 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="GetJobsForReUploadResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetV12PassWord">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="companyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetV12PassWordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetV12PassWordResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1967,24 +2031,14 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SubmitJob">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="serviceURL" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="josnserdata" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="authorization" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="SubmitJobResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="SubmitJobResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="SubmitJobSoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitJob" />
+  </wsdl:message>
+  <wsdl:message name="SubmitJobSoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitJobResponse" />
+  </wsdl:message>
   <wsdl:message name="SendAsyncEmailSoapIn">
     <wsdl:part name="parameters" element="tns:SendAsyncEmail" />
   </wsdl:message>
@@ -2080,6 +2134,12 @@
   </wsdl:message>
   <wsdl:message name="VMSPostDataSoapOut">
     <wsdl:part name="parameters" element="tns:VMSPostDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="UploadHistoryPhotoByCurrentInspectionIdSoapIn">
+    <wsdl:part name="parameters" element="tns:UploadHistoryPhotoByCurrentInspectionId" />
+  </wsdl:message>
+  <wsdl:message name="UploadHistoryPhotoByCurrentInspectionIdSoapOut">
+    <wsdl:part name="parameters" element="tns:UploadHistoryPhotoByCurrentInspectionIdResponse" />
   </wsdl:message>
   <wsdl:message name="CancelMBALTAWGFjobsinILSoapIn">
     <wsdl:part name="parameters" element="tns:CancelMBALTAWGFjobsinIL" />
@@ -2380,6 +2440,12 @@
   </wsdl:message>
   <wsdl:message name="GetJobsForReUploadSoapOut">
     <wsdl:part name="parameters" element="tns:GetJobsForReUploadResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetV12PassWordSoapIn">
+    <wsdl:part name="parameters" element="tns:GetV12PassWord" />
+  </wsdl:message>
+  <wsdl:message name="GetV12PassWordSoapOut">
+    <wsdl:part name="parameters" element="tns:GetV12PassWordResponse" />
   </wsdl:message>
   <wsdl:message name="SetAttachmentsUploadedSoapIn">
     <wsdl:part name="parameters" element="tns:SetAttachmentsUploaded" />
@@ -2801,13 +2867,11 @@
   <wsdl:message name="GetSourceXmlSoapOut">
     <wsdl:part name="parameters" element="tns:GetSourceXmlResponse" />
   </wsdl:message>
-  <wsdl:message name="SubmitJobSoapIn">
-    <wsdl:part name="parameters" element="tns:SubmitJob" />
-  </wsdl:message>
-  <wsdl:message name="SubmitJobSoapOut">
-    <wsdl:part name="parameters" element="tns:SubmitJobResponse" />
-  </wsdl:message>
   <wsdl:portType name="ezUpdaterServicesSoap">
+    <wsdl:operation name="SubmitJob">
+      <wsdl:input message="tns:SubmitJobSoapIn" />
+      <wsdl:output message="tns:SubmitJobSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SendAsyncEmail">
       <wsdl:input message="tns:SendAsyncEmailSoapIn" />
       <wsdl:output message="tns:SendAsyncEmailSoapOut" />
@@ -2871,6 +2935,10 @@
     <wsdl:operation name="VMSPostData">
       <wsdl:input message="tns:VMSPostDataSoapIn" />
       <wsdl:output message="tns:VMSPostDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadHistoryPhotoByCurrentInspectionId">
+      <wsdl:input message="tns:UploadHistoryPhotoByCurrentInspectionIdSoapIn" />
+      <wsdl:output message="tns:UploadHistoryPhotoByCurrentInspectionIdSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="CancelMBALTAWGFjobsinIL">
       <wsdl:input message="tns:CancelMBALTAWGFjobsinILSoapIn" />
@@ -3071,6 +3139,10 @@
     <wsdl:operation name="GetJobsForReUpload">
       <wsdl:input message="tns:GetJobsForReUploadSoapIn" />
       <wsdl:output message="tns:GetJobsForReUploadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetV12PassWord">
+      <wsdl:input message="tns:GetV12PassWordSoapIn" />
+      <wsdl:output message="tns:GetV12PassWordSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SetAttachmentsUploaded">
       <wsdl:input message="tns:SetAttachmentsUploadedSoapIn" />
@@ -3352,13 +3424,18 @@
       <wsdl:input message="tns:GetSourceXmlSoapIn" />
       <wsdl:output message="tns:GetSourceXmlSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="SubmitJob">
-      <wsdl:input message="tns:SubmitJobSoapIn" />
-      <wsdl:output message="tns:SubmitJobSoapOut" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="ezUpdaterServicesSoap" type="tns:ezUpdaterServicesSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SubmitJob">
+      <soap:operation soapAction="http://tempuri.org/SubmitJob" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SendAsyncEmail">
       <soap:operation soapAction="http://tempuri.org/SendAsyncEmail" style="document" />
       <wsdl:input>
@@ -3496,6 +3573,15 @@
     </wsdl:operation>
     <wsdl:operation name="VMSPostData">
       <soap:operation soapAction="http://tempuri.org/VMSPostData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadHistoryPhotoByCurrentInspectionId">
+      <soap:operation soapAction="http://tempuri.org/UploadHistoryPhotoByCurrentInspectionId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -3946,6 +4032,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetJobsForReUpload">
       <soap:operation soapAction="http://tempuri.org/GetJobsForReUpload" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetV12PassWord">
+      <soap:operation soapAction="http://tempuri.org/GetV12PassWord" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -4583,18 +4678,18 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SubmitJob">
-      <soap:operation soapAction="http://tempuri.org/SubmitJob" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="ezUpdaterServicesSoap12" type="tns:ezUpdaterServicesSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SubmitJob">
+      <soap12:operation soapAction="http://tempuri.org/SubmitJob" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SendAsyncEmail">
       <soap12:operation soapAction="http://tempuri.org/SendAsyncEmail" style="document" />
       <wsdl:input>
@@ -4732,6 +4827,15 @@
     </wsdl:operation>
     <wsdl:operation name="VMSPostData">
       <soap12:operation soapAction="http://tempuri.org/VMSPostData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadHistoryPhotoByCurrentInspectionId">
+      <soap12:operation soapAction="http://tempuri.org/UploadHistoryPhotoByCurrentInspectionId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -5182,6 +5286,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetJobsForReUpload">
       <soap12:operation soapAction="http://tempuri.org/GetJobsForReUpload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetV12PassWord">
+      <soap12:operation soapAction="http://tempuri.org/GetV12PassWord" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -5812,15 +5925,6 @@
     </wsdl:operation>
     <wsdl:operation name="GetSourceXml">
       <soap12:operation soapAction="http://tempuri.org/GetSourceXml" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SubmitJob">
-      <soap12:operation soapAction="http://tempuri.org/SubmitJob" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

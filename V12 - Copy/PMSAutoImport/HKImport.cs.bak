@@ -1,0 +1,605 @@
+﻿using ICSharpCode.SharpZipLib.Zip;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Xml;
+
+namespace PMSAutoImport
+{
+    public class HKImport
+    {
+        int waitMinute = 5;
+        //string importFolder = ConfigurationManager.AppSettings["importFolder"];
+        string dynamicUrl = "V12_12-7-07-000_B";
+        string domain = "https://v12.instantsoftware.com";
+        public void SetDomain(string companyId)
+        {
+            if (companyId == "20452")
+            {
+                domain = "https://v12migration.instantsoftware.com";
+            }
+        }
+
+        string companyId = "";
+        string importFolder = "";
+        CookieContainer myCookieContainer = new CookieContainer();
+        public HKImport(string companyId)
+        {
+            this.companyId = companyId;
+            importFolder = ConfigurationManager.AppSettings[companyId + "importFolder"];
+
+        }
+
+        public void login()
+        {
+            string responseString = GetRequest(myCookieContainer, domain + "/V12login/V12Login.aspx");
+
+
+            //string eventtarget = GetHtmlHiddenVaule(responseString, "__EVENTTARGET");
+            // string eventargument = GetHtmlHiddenVaule(responseString, "__EVENTARGUMENT");
+            string viewstate = GetHtmlHiddenVaule(responseString, "__VIEWSTATE");
+            string viewstategenerator = GetHtmlHiddenVaule(responseString, "__VIEWSTATEGENERATOR");
+            string eventvalidation = GetHtmlHiddenVaule(responseString, "__EVENTVALIDATION");
+
+            var accountKey = companyId + "Account";
+            string account = ConfigurationManager.AppSettings[accountKey];
+            string companyCode = account.Split(',')[0]; // "0637";//importInfo.ClientSiteLogin.Split('-')[0];
+            string login = account.Split(',')[1].Split('|')[0];//"EZinspections";//importInfo.ClientSiteLogin.Split('-')[1];
+            string password = account.Split('|')[1].Replace("@", "%40");//importInfo.ClientSitePassword.Replace("@", "%40");
+
+            string content = "__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE={0}&__VIEWSTATEGENERATOR={1}&__EVENTVALIDATION={2}&txtCompanyCode={3}&txtLogin={4}&txtPassword={5}&SubmitButton=Login&hdnClear=&hdnRedirect=";
+            content = string.Format(content, viewstate, viewstategenerator, eventvalidation, companyCode, login, password);
+
+            responseString = PostRequest(myCookieContainer, domain + "/v12login/V12Login.aspx?Authenticate", content);
+
+            dynamicUrl = GetDynamicUrl(responseString);
+            string userdata = GetHtmlHiddenVaule(responseString, "userdata");
+            string redirect = GetHtmlHiddenVaule(responseString, "redirect");
+            content = string.Format("userdata={0}&redirect={1}", userdata, redirect);
+
+            responseString = PostRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/SecondaryLoginPage.aspx", content);
+
+            //responseString = GetRequest(myCookieContainer, domain +"/V12_12-7-07-000_B/Web_Page/index.aspx");
+            Console.WriteLine("login successfully ");
+        }
+
+        public void exportUnitFeature()
+        {
+
+            var responseString = GetRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/Property%20Management/UnitSearch.aspx");
+
+
+            var content = "__EVENTTARGET=ctl00%24TopHeaderBar%24btnSearch&__EVENTARGUMENT=&__LASTFOCUS=&__VIEWSTATE={0}&__VIEWSTATEGENERATOR={1}&ctl00%24universalSearch%24universalSearchViewModel%24viewStateStorage=%7B%7D&ctl00%24TopHeaderBar%24captFindFirst=5000&ctl00%24MainBody%24tbunit_name=&ctl00%24MainBody%24captRateUnTyp=0&ctl00%24MainBody%24txtAddress1=&ctl00%24MainBody%24txtAddress2=&ctl00%24MainBody%24county=&ctl00%24MainBody%24city=&ctl00%24MainBody%24state=&ctl00%24MainBody%24zip_code=&ctl00%24MainBody%24captStatus=Active&ctl00%24MainBody%24captBeedroms=&ctl00%24MainBody%24captBathroms=&ctl00%24MainBody%24drdComplex=&ctl00%24MainBody%24captRating=&ctl00%24MainBody%24captSmokingAllowed=&ctl00%24MainBody%24captPetsAllowed=&ctl00%24MainBody%24drOwnerName=0&ctl00%24MainBody%24captTaxDistrinct=&ctl00%24MainBody%24captOccupancy=&ctl00%24MainBody%24captCleanStatus=&ctl00%24MainBody%24captHoseKepping=&ctl00%24MainBody%24captContractType=&ctl00%24MainBody%24captLockOff=&ctl00%24MainBody%24tbkeyCode=&ctl00%24MainBody%24ddlFeatures=";
+
+            var viewstate = GetHtmlHiddenVaule(responseString, "__VIEWSTATE");
+            var viewstategenerator = GetHtmlHiddenVaule(responseString, "__VIEWSTATEGENERATOR");
+
+            content = string.Format(content, viewstate, viewstategenerator);
+
+            responseString = PostRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/Property%20Management/UnitSearch.aspx", content);
+
+            int i = 0;
+            DataTable tbNotes = new DataTable();
+            tbNotes.Columns.Add("UnitName");
+            //tbNotes.Columns.Add("HousekeepingNotes");
+            //tbNotes.Columns.Add("MaintenanceNotes");
+            //tbNotes.Columns.Add("HousekeeperFirst");
+            //tbNotes.Columns.Add("HousekeeperLast");
+            //tbNotes.Columns.Add("AdditionalInfo");
+
+            //List<HKNote> listNotes = new List<HKNote>();
+            var matchs = Regex.Matches(responseString, "<a id=\"ctl00_MainBody_DataGridUnit_ct.*?_nameButton.*?unit_id=(.*?)\">(.*?)</a>");
+            foreach (Match m in matchs)
+            {
+                try
+                {
+                    i++;
+
+
+                    //HKNote note = new HKNote();
+
+                    DataRow r = tbNotes.NewRow();
+                    r["UnitName"] = m.Groups[2].ToString();
+
+                    Console.WriteLine(string.Format("{0} - {1} - {2}", i, matchs.Count, r["UnitName"]));
+
+                    //note.UnitID = m.Groups[1].ToString();
+                    //note.UnitName = m.Groups[2].ToString();
+
+                    responseString = GetRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/Property%20Management/UnitInfo.aspx?unit_id=" + m.Groups[1].ToString());
+
+                    responseString = GetRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/Property%20Management/UnitAttributes.aspx");
+
+                    Match m1 = Regex.Match(responseString, "<textarea.*?id=\"ctl00_MainBody_txtNotes.*?>([\\s\\S]*?)</textarea>");
+                    //note.MaintenanceNotes = m1.Groups[1].ToString().Trim();
+                    r["MaintenanceNotes"] = m1.Groups[1].ToString().Trim();
+                    m1 = Regex.Match(responseString, "<textarea.*?id=\"ctl00_MainBody_txtHousekeepingNotes.*?>([\\s\\S]*?)</textarea>");
+                    //note.HousekeepingNotes = m1.Groups[1].ToString().Trim();
+                    r["HousekeepingNotes"] = m1.Groups[1].ToString().Trim();
+
+                    r["HousekeeperFirst"] = "";
+                    r["HousekeeperLast"] = "";
+
+
+                    responseString = GetRequest(myCookieContainer, domain + "/V12_12-7-07-000_B/Web_Page/Property%20Management/UnitAdditionalInfo.aspx");
+                    m1 = Regex.Match(responseString, "<input.*?id=\"ctl00_MainBody_knockoutViewModel_viewStateStorage.*? value=\"([\\s\\S]*?)\"");
+                    r["AdditionalInfo"] = m1.Groups[1].ToString().Trim();
+                    //ctl00_MainBody_knockoutViewModel_viewStateStorage
+                    // listNotes.Add(note);
+                    tbNotes.Rows.Add(r);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+        }
+
+
+       
+
+
+        private string GetRequest(CookieContainer myCookieContainer, string url)
+        {
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = domain +"/V12login/V12Login.aspx";
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Get";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+
+
+            string resultStr = "";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultStr = reader.ReadToEnd();
+                }
+            }
+            return resultStr;
+        }
+
+        private string DownFile(CookieContainer myCookieContainer, string url, string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = domain +"/V12login/V12Login.aspx";
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Get";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+
+
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    while (size > 0)
+                    {
+                        stream.Write(bArr, 0, size);
+                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    }
+                    stream.Close();
+
+                }
+            }
+
+            return path;
+        }
+
+        private string DownFile(CookieContainer myCookieContainer, string url, string content, string path)
+        {
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Post";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+            request.AllowAutoRedirect = true;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                byte[] contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+            }
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    while (size > 0)
+                    {
+                        stream.Write(bArr, 0, size);
+                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    }
+                    stream.Close();
+
+                }
+            }
+
+            return path;
+        }
+
+        private string PostRequest(CookieContainer myCookieContainer, string url, string content, bool allowAutoRedirect = true)
+        {
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Post";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+            request.AllowAutoRedirect = allowAutoRedirect;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                byte[] contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+            }
+
+            string resultStr = "";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultStr = reader.ReadToEnd();
+                }
+            }
+            return resultStr;
+        }
+
+        private string PostJson(CookieContainer myCookieContainer, string url, string content, string xid, string uid, string coid)
+        {
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Post";
+            request.ContentType = "application/json";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            request.Headers.Add("X-NewRelic-ID", xid);
+            request.Headers.Add("UserId", uid);
+            request.Headers.Add("COID", coid);
+            request.CookieContainer = myCookieContainer;
+            request.AllowAutoRedirect = true;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                byte[] contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+            }
+
+            string resultStr = "";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultStr = reader.ReadToEnd();
+                }
+            }
+            return resultStr;
+        }
+
+        private string PostFile(CookieContainer myCookieContainer, string url, string xid, string uid, string coid,
+           Dictionary<string, string> nameValues, string filePath)
+        {
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            var exitname = filePath.Substring(filePath.LastIndexOf(".") + 1).ToLower();
+            var mimeName = "";
+
+            if (exitname == "pdf")
+            {
+                mimeName = "application/pdf";
+            }
+            else if (exitname == "jpg")
+            {
+                mimeName = "image/jpeg";
+            }
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            var boundary = "----" + Guid.NewGuid().ToString();
+
+            HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+            httpWebRequest.Method = "Post";
+            httpWebRequest.ContentType = "multipart/form-data; boundary=" + boundary;
+            httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            httpWebRequest.Accept = "application/json, text/javascript, */*";
+            httpWebRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            httpWebRequest.Headers.Add("X-NewRelic-ID", xid);
+            httpWebRequest.Headers.Add("UserId", uid);
+            httpWebRequest.Headers.Add("COID", coid);
+            httpWebRequest.CookieContainer = myCookieContainer;
+            httpWebRequest.AllowAutoRedirect = true;
+
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback
+                                                                              (
+                                                                                 delegate { return true; }
+                                                                              );
+
+            Stream requestStream = httpWebRequest.GetRequestStream();
+            String totalContent = "";
+            string content = string.Empty;
+            byte[] contentBytes;
+
+            // content = "--" + boundary + "\r\n";
+            //totalContent += content;
+
+            foreach (string key in nameValues.Keys)
+            {
+                content = "--" + boundary + "\r\n";
+                content += string.Format("Content-Disposition: form-data; name=\"{0}\" \r\n\r\n{1}\r\n", key, nameValues[key]);
+                contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+                totalContent += content;
+            }
+
+
+            var fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);
+
+            content = "--" + boundary + "\r\n";
+            content += "Content-Disposition: form-data; name=\"files[]\"; filename=\"" + fileName + "\"\r\n";
+            content += string.Format("Content-type: {0}\r\n\r\n", mimeName);
+            contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+            requestStream.Write(contentBytes, 0, contentBytes.Length);
+
+            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            byte[] buffer = new byte[4096];
+            int bytesRead = 0;
+            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                requestStream.Write(buffer, 0, bytesRead);
+                requestStream.Flush();
+            }
+            fileStream.Close();
+
+            totalContent += content;
+            content = "\r\n--" + boundary + "--\r\n";
+            contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+            requestStream.Write(contentBytes, 0, contentBytes.Length);
+
+            requestStream.Close();
+            totalContent += content;
+
+
+            string resultStr = "";
+            using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultStr = reader.ReadToEnd();
+                }
+            }
+            return resultStr;
+        }
+
+
+        private string GetHtmlHiddenVaule(string responseString, string name)
+        {
+            var matchString = GetHtmlHiddenVaule1(responseString, name);
+            if (String.IsNullOrEmpty(matchString))
+            {
+                return GetHtmlHiddenVaule2(responseString, name);
+            }
+
+            return matchString;
+        }
+
+        private string GetHtmlHiddenVaule1(string responseString, string name)
+        {
+            if (name.IndexOf("$") > -1)
+            {
+                name = name.Replace("$", "\\$");
+            }
+            Match m = Regex.Match(responseString, string.Format("name=\"{0}.*value.*\".*\"", name));
+            if (m.Length <= 0)
+            {
+                return string.Empty;
+                //throw new EziFormFillerJobLevelException(string.Format("Uploading photos to Altisource site failed, {0} can't be found.", name.Replace("__", "")));
+            }
+            string value = Regex.Match(m.ToString(), "value=\".*\"").ToString();
+
+            return value.Replace("value=", "").Replace("\"", "").Replace("/", "%2F").Replace("+", "%2B").Replace("=", "%3D");
+        }
+
+        private string GetHtmlHiddenVaule2(string responseString, string name)
+        {
+            if (name.IndexOf("$") > -1)
+            {
+                name = name.Replace("$", "\\$");
+            }
+            Match m = Regex.Match(responseString, string.Format("name='{0}.*?value.*?'.*?'", name));
+            if (m.Length <= 0)
+            {
+                return string.Empty;
+                //throw new EziFormFillerJobLevelException(string.Format("Uploading photos to Altisource site failed, {0} can't be found.", name.Replace("__", "")));
+            }
+            string value = Regex.Match(m.ToString(), "value='.*'").ToString();
+
+            return value.Replace("value=", "").Replace("'", "").Replace("/", "%2F").Replace("+", "%2B").Replace("=", "%3D");
+        }
+
+        private string GetDynamicUrl(string responseString)
+        {
+            //Match m = Regex.Match(responseString, "<form.*?action=.*?>");
+            //if (m.Length <= 0)
+            //{
+            //    return string.Empty;
+            //    //throw new EziFormFillerJobLevelException(string.Format("Uploading photos to Altisource site failed, {0} can't be found.", name.Replace("__", "")));
+            //}
+            string value = Regex.Match(responseString, domain + "/.*?/").ToString();
+
+            return value.Replace(domain + "", "").Replace("/", "");
+
+        }
+
+
+        private string GetHTMLInput(string responseString, Dictionary<string, string> dict)
+        {
+            var htmlString = "";
+            var matches = Regex.Matches(responseString, "<input.*?name=\"(.*?)\"[\\s\\S]*?>");
+            foreach (Match m in matches)
+            {
+
+                var name = System.Web.HttpUtility.UrlEncode(m.Groups[1].Value).Replace("(", "%28").Replace(")", "%29");
+                if (name.Contains("%24btnPick"))
+                {
+                    continue;
+                }
+
+                var value = "";
+                if (m.Value.Contains("checkbox"))
+                {
+                    if (m.Value.Contains("checked"))
+                    {
+                        value = "on";
+                        htmlString += string.Format("&{0}={1}", name, value);
+                    }
+                }
+                else
+                {
+                    var valueMatch = Regex.Match(m.Value, "value=\"(.*?)\""); //.Value.Replace("value=","").Replace("\"","");
+
+                    value = System.Web.HttpUtility.UrlEncode(valueMatch.Groups[1].Value).Replace("(", "%28").Replace(")", "%29").Replace("'", "%27");
+
+                    if (dict.Keys.Contains(name))
+                    {
+                        value = System.Web.HttpUtility.UrlEncode(dict[name]).Replace("(", "%28").Replace(")", "%29").Replace("_", "%24").Replace("'", "%27");
+
+                        //value = dict[name];
+                    }
+
+                    htmlString += string.Format("&{0}={1}", name, value);
+                }
+            }
+
+            //htmlString = htmlString.Replace("btnSaveAndClose=Save+and+Close", "");
+
+            //htmlString = "";
+            matches = Regex.Matches(responseString, "<select.*?name=\"(.*?)\"[\\s\\S]*?</select>");
+            //>[\\s\\S]*?<option.*?value=\".*?\".*?selected=\"true\"[\\s\\S]*?
+            foreach (Match m in matches)
+            {
+                var name = System.Web.HttpUtility.UrlEncode(m.Groups[1].Value).Replace("(", "%28").Replace(")", "%29");
+
+                var valueMatch = Regex.Match(m.Value, "<option.*?selected=\".*?\"[\\s\\S]*?</option");
+
+                valueMatch = Regex.Match(valueMatch.Value, "value=\"(.*?)\""); //.Value.Replace("value=", "").Replace("\"", "");
+
+                var value = System.Web.HttpUtility.UrlEncode(valueMatch.Groups[1].Value).Replace("(", "%28").Replace(")", "%29");
+
+                if (value == "")
+                {
+                    valueMatch = Regex.Match(m.Value, "<option.*?value=\"(.*?)\"[\\s\\S]*?</option");
+                    value = System.Web.HttpUtility.UrlEncode(valueMatch.Groups[1].Value).Replace("(", "%28").Replace(")", "%29");
+
+                }
+
+
+                if (dict.Keys.Contains(name))
+                {
+                    value = System.Web.HttpUtility.UrlEncode(dict[name]).Replace("(", "%28").Replace(")", "%29").Replace("_", "%24");
+
+                    //value = dict[name];
+                }
+
+                htmlString += string.Format("&{0}={1}", name, value);
+            }
+
+            // htmlString = "";
+            matches = Regex.Matches(responseString, "<textarea.*?name=\"(.*?)\"[\\s\\S]*?>([\\s\\S]*?)</textarea>");
+            foreach (Match m in matches)
+            {
+                var name = System.Web.HttpUtility.UrlEncode(m.Groups[1].Value).Replace("(", "%28").Replace(")", "%29").Replace("'", "%27");
+                // var value = System.Web.HttpUtility.UrlEncode(m.Groups[2].Value).Replace("(", "%28").Replace(")", "%29");
+                var value = System.Web.HttpUtility.HtmlDecode(m.Groups[2].Value);
+
+                if (dict.Keys.Contains(name))
+                {
+                    value = value.Trim(new char[] { '\r', '\n' }) + "\r\n" + dict[name];
+                }
+
+                value = System.Web.HttpUtility.UrlEncode(value).Replace("(", "%28").Replace(")", "%29").Replace("'", "%27");
+
+                htmlString += string.Format("&{0}={1}", name, value);
+            }
+
+
+
+            return htmlString;
+        }
+
+
+    }
+}

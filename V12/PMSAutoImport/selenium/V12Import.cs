@@ -82,13 +82,15 @@ namespace PMSAutoImport
 
 
         
-        public abstract string exportFile();
+        public abstract string exportFile(string type);
+
+       
 
         public abstract void uploadFile(string fileName);
 
-        public void exportAndUpload()
+        public void exportAndUpload(string type)
         {
-            var fileName = exportFile();
+            var fileName = exportFile(type);
             if (fileName != "")
             {
                 uploadFile(fileName);
@@ -106,6 +108,19 @@ namespace PMSAutoImport
             Console.WriteLine("End download file " + file);
 
             return file;
+        }
+
+        protected List<string> addFile(Func<List<string>> func)
+        {
+            Console.WriteLine("Begin download file");
+            var files = func();
+            if (files != null)
+            {
+                fileNameList.AddRange(files);
+            }
+            Console.WriteLine("End download file " + files.Count());
+
+            return files;
         }
 
         //protected string addFile(Func<string, string> func, string arg1)

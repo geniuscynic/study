@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -89,7 +90,7 @@ namespace PMSAutoImport
 
         private string exportHousekeepingCleaning()
         {
-            var startDate = DateTime.Now .ToShortDateString();
+            var startDate = DateTime.Now.AddDays(-7).ToShortDateString();
             var endDate = DateTime.Now.AddDays(7).ToShortDateString();
 
             if (companyId == "21388")
@@ -209,6 +210,7 @@ namespace PMSAutoImport
 
         }
 
+
         private string AddHKNoteToWorkOrder()
         {
 
@@ -239,22 +241,105 @@ namespace PMSAutoImport
 
         }
 
-        private string CreateWorkOrder()
+        public string GetProcessors(string roleId, string roleName, string inspector)
         {
-
-
             var jsonObject = new
             {
-                methodName = "AddPhotoToWorkOrder",
+                methodName = "GetProcessors",
                 @params = new
                 {
                     token_key = TokenKey,
                     token_secret = TokenSecretKey,
-                    processor_id = 1,
-                    work_order_id = 7016659,
-                    photo_name = "test.jpg",
-                    photo_description= "dd",
-                    photo_data = "iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAACpklEQVR42u3bPVIDMQwF4BwhJSVXoKTkChyBMi0lJVehpEzLVVJScgUTJyvPW621P2GwvOu3MxogCWHyIXllbbILIewYtwcRCEhAAhKQQUACEpCADAISkIAEZBCQgAQkIIOABCRgLg5PdwGDgAvgji/3Ibw/9iLetmbIYnin14cBHsYtiDVkcjHAMTzJxL9ksxdkUTyrjJdk4dhzxCwvjVg8++LP+/3eBIz36ZjKZr1ElET89z+AWAiEEDGjuhLuHT+fz5forXUZPPl9ycxNAWLWaEB50RFp7LjcLzBGxspzxUwsWcpFAPEFyosWDI0nWJJ96ZhR8oioS3/1faBGHMPDSI9ZABhjc4CCOCf7lgRmdGk8t63cILsMRCv75DliqWLWNQeYO/OOgWLorMP1dbPDBN1UxyN+tTLRal3wH2D1i5sH1O2MnHUlJDt1z5gDbGacpTNQzpzh+yMcDm9XjPP3MTC7CGjtYzssK1IJy20KrzlAREyN8gQihpR2LXgugFK2es2TLZgFh2tj04A5RJjlXde883qogTVgDXiuF5X0nnjQ3mQQa8NzBUxnYGN7ZpVsTXjuGWg1yLnpjWRrbReg3PBwAKr7Ohyg5va6NUG6lm+uPHNgOezSk+eqATHblo6zvIYI1ZxErOzKja9w4txDPH61Bzj3erF18QghPc/MrnhT71bIXfMdlP+5X5QGvDnAuWuenjxDP9jWPNBqZaxMtEb2vat71wxs8/2BVp83J6SUvVuZ1QN6I7p38lPbtim8ZgHj2iUzQL3WCUgOU8M2N5FOeKcTvoclISKIWeJd49z0QBVbkTGQNPbqHndBddx5VLUGzu3haur7Vv0xBw5U+TkRBgEJSEACMghIQAISkEFAAhKQgAQkAgEJSEACMghIwFXGL4pi66jNesPAAAAAAElFTkSuQmCC"
+                    role_id = roleId,
+                    role_name = roleName,
+                    inspector = inspector
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+
+            //JArray jarray = (JArray)jobject["data"]["maintenances"]["maintenance"];
+
+            //foreach (JToken jtoken in jarray)
+            //{
+            //    var unitId = jtoken["unit_id"];
+            //    var a = "";
+            //}
+        }
+
+        public string GetProcessorsVerdor(string inspectorName)
+        {
+
+            var result = GetProcessors("0", "Vendor", "");
+
+            JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+
+            JArray jarray = (JArray)jobject["data"]["processors"];
+
+            foreach (JToken jtoken in jarray)
+            {
+                var repName = jtoken["first_name"].ToString();
+                if (jtoken["last_name"].ToString() != "{}")
+                {
+                    repName += " " + jtoken["last_name"].ToString();
+                }
+
+                if (repName.Trim().ToLower() == inspectorName.ToLower())
+                {
+                    return jtoken["id"].ToString();
+                }
+            }
+
+            return "0";
+        }
+
+        public string GetReservationInfo(string confirmationId)
+        {
+            var jsonObject = new
+            {
+                methodName = "GetReservationInfo",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    confirmation_id = confirmationId,
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+        }
+
+        public string CreateWorkOrder(string unitId, string title, string description, string repName, string dueDate)
+        {
+
+            var verdorId = GetProcessorsVerdor(repName);
+            var jsonObject = new
+            {
+                methodName = "CreateWorkOrder",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+
+                    unit_id = unitId,
+                    title = title,
+                    description = description,
+                    vendor_id = verdorId,
+                    expected_completion_date = dueDate
                  }
 
             };
@@ -263,13 +348,56 @@ namespace PMSAutoImport
 
             var result = PostRequest(url, json);
 
-            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
-            File.WriteAllText(fileName, result);
+            JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
 
-            return fileName;
+            var id = "";
+
+            try
+            {
+                id = jobject["data"]["maintenance_id"].ToString();
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
+
+            //var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            //File.WriteAllText(fileName, result);
+
+            return id;
 
         }
 
+        public string UpdateWorkOrderAssignedVendor(string workOrderId, string repName)
+        {
+
+            var verdorId = GetProcessorsVerdor(repName);
+            var jsonObject = new
+            {
+                methodName = "UpdateWorkOrderAssignedVendor",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    processor_id = verdorId,
+                    work_order_id = workOrderId,
+                    vendor_id = verdorId
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            //File.WriteAllText(fileName, result);
+
+            //return fileName;
+
+        }
 
         private string AddPhotoToWorkOrder()
         {
@@ -304,29 +432,37 @@ namespace PMSAutoImport
 
         private string GetProcessors()
         {
-            var jsonObject = new
+            for (int i = 0; i < 20; i++)
             {
-                methodName = "GetProcessors",
-                @params = new
+                var jsonObject = new
                 {
-                    token_key = TokenKey,
-                    token_secret = TokenSecretKey,
-                    role_name = "Admin",
-                    role_id = "1",
-                    inspector = "yes"
+                    methodName = "GetProcessors",
+                    @params = new
+                    {
+                        token_key = TokenKey,
+                        token_secret = TokenSecretKey,
+                        role_name = "",
+                        role_id = i,
+                        inspector = ""
 
-                }
+                    }
 
-            };
+                };
 
-            string json = JsonConvert.SerializeObject(jsonObject);
+                string json = JsonConvert.SerializeObject(jsonObject);
 
-            var result = PostRequest(url, json);
+                var result = PostRequest(url, json);
 
-            var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
-            File.WriteAllText(fileName, result);
+                Console.WriteLine(result);
 
-            return fileName;
+                var fileName = string.Format("{0}GetProcessors_{1}_{2}.txt", importFolder, i, Guid.NewGuid().ToString());
+                File.WriteAllText(fileName, result);
+            }
+
+           // var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+           // File.WriteAllText(fileName, result);
+
+            return "";
 
         }
 
@@ -457,9 +593,9 @@ namespace PMSAutoImport
 
         }
 
-        public override string exportFile()
+        public override string exportFile(string type)
         {
-            LogHoursForWorkOrder();
+            //LogHoursForWorkOrder();
             //GetProcessorInfo();
             //GetProcessors();
             //AddVendorCostToWorkOrder();
@@ -467,7 +603,7 @@ namespace PMSAutoImport
             //AddPhotoToWorkOrder();
             //AddHKNoteToWorkOrder();
             //exportMaintenanceStatuses();
-            exportWorkOrders();
+            //exportWorkOrders();
             //RenewExpiredToken();
             //addFile(() => exportWorkOrders());
             addFile(() => exportPropertyList());

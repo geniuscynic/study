@@ -16,6 +16,10 @@ namespace HKAutoImport.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.ezUpdaterServicesSoap")]
     public interface ezUpdaterServicesSoap {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SubmitJob", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        string SubmitJob(string serviceURL, string josnserdata, string authorization);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SendAsyncEmail", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         int SendAsyncEmail();
@@ -80,6 +84,10 @@ namespace HKAutoImport.ServiceReference1 {
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         string VMSPostData(string serviceUrl, string serviceMethod, string token, string postData);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UploadHistoryPhotoByCurrentInspectionId", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        object UploadHistoryPhotoByCurrentInspectionId(HKAutoImport.ServiceReference1.OrderAttachment attachment, int inspId, string role);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CancelMBALTAWGFjobsinIL", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         object CancelMBALTAWGFjobsinIL();
@@ -90,7 +98,7 @@ namespace HKAutoImport.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetLatestNotification", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        string GetLatestNotification(string companyId);
+        string GetLatestNotification(string companyId, string inspectorId, string role);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetPropertyPrefixQ", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -281,6 +289,10 @@ namespace HKAutoImport.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetJobsForReUpload", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         string GetJobsForReUpload(int companyId, int ownerCoId, string productCode, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetV12PassWord", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        System.Data.DataSet GetV12PassWord(int companyId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SetAttachmentsUploaded", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -562,10 +574,94 @@ namespace HKAutoImport.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetSourceXml", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         string GetSourceXml(int inspectionId);
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public partial class OrderAttachment : object, System.ComponentModel.INotifyPropertyChanged {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SubmitJob", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        string SubmitJob(string serviceURL, string josnserdata, string authorization);
+        private string nameField;
+        
+        private string descriptionField;
+        
+        private string typeField;
+        
+        private string categoryCodeField;
+        
+        private byte[] attachmentBinaryField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+                this.RaisePropertyChanged("Description");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string Type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+                this.RaisePropertyChanged("Type");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string CategoryCode {
+            get {
+                return this.categoryCodeField;
+            }
+            set {
+                this.categoryCodeField = value;
+                this.RaisePropertyChanged("CategoryCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary", Order=4)]
+        public byte[] AttachmentBinary {
+            get {
+                return this.attachmentBinaryField;
+            }
+            set {
+                this.attachmentBinaryField = value;
+                this.RaisePropertyChanged("AttachmentBinary");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -668,7 +764,7 @@ namespace HKAutoImport.ServiceReference1 {
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
     [global::System.Xml.Serialization.XmlRootAttribute("InspSTDataSet")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3056.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     public partial class InspSTDataSet : global::System.Data.DataSet {
         
         private inspSTDataTable tableinspST;
@@ -1577,6 +1673,10 @@ namespace HKAutoImport.ServiceReference1 {
                 base(binding, remoteAddress) {
         }
         
+        public string SubmitJob(string serviceURL, string josnserdata, string authorization) {
+            return base.Channel.SubmitJob(serviceURL, josnserdata, authorization);
+        }
+        
         public int SendAsyncEmail() {
             return base.Channel.SendAsyncEmail();
         }
@@ -1641,6 +1741,10 @@ namespace HKAutoImport.ServiceReference1 {
             return base.Channel.VMSPostData(serviceUrl, serviceMethod, token, postData);
         }
         
+        public object UploadHistoryPhotoByCurrentInspectionId(HKAutoImport.ServiceReference1.OrderAttachment attachment, int inspId, string role) {
+            return base.Channel.UploadHistoryPhotoByCurrentInspectionId(attachment, inspId, role);
+        }
+        
         public object CancelMBALTAWGFjobsinIL() {
             return base.Channel.CancelMBALTAWGFjobsinIL();
         }
@@ -1649,8 +1753,8 @@ namespace HKAutoImport.ServiceReference1 {
             return base.Channel.GetQuickPrefixQ(str1, str2, str3);
         }
         
-        public string GetLatestNotification(string companyId) {
-            return base.Channel.GetLatestNotification(companyId);
+        public string GetLatestNotification(string companyId, string inspectorId, string role) {
+            return base.Channel.GetLatestNotification(companyId, inspectorId, role);
         }
         
         public string GetPropertyPrefixQ(string str1, string str2) {
@@ -1860,6 +1964,10 @@ namespace HKAutoImport.ServiceReference1 {
         
         public string GetJobsForReUpload(int companyId, int ownerCoId, string productCode, string status) {
             return base.Channel.GetJobsForReUpload(companyId, ownerCoId, productCode, status);
+        }
+        
+        public System.Data.DataSet GetV12PassWord(int companyId) {
+            return base.Channel.GetV12PassWord(companyId);
         }
         
         public void SetAttachmentsUploaded(int riskId, string type, string stage) {
@@ -2150,10 +2258,6 @@ namespace HKAutoImport.ServiceReference1 {
         
         public string GetSourceXml(int inspectionId) {
             return base.Channel.GetSourceXml(inspectionId);
-        }
-        
-        public string SubmitJob(string serviceURL, string josnserdata, string authorization) {
-            return base.Channel.SubmitJob(serviceURL, josnserdata, authorization);
         }
     }
 }

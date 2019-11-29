@@ -140,7 +140,7 @@ namespace PMSAutoImport
 
             return "";
         }
-        public override string exportFile()
+        public override string exportFile(string type)
         {
             addFile(() => exportAddOnsSold());
             addFile(() => exportHousekeepingServicesSchedule());

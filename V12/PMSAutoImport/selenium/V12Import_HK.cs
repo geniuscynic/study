@@ -81,8 +81,8 @@ namespace PMSAutoImport
             //}
         }
 
-  
-        public override string exportFile()
+
+        public override string exportFile(string type)
         {
             addFile(() => exportArrivals());
 

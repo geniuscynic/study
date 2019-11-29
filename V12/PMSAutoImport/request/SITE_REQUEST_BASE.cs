@@ -155,6 +155,50 @@ namespace PMSAutoImport
             return resultStr;
         }
 
+        protected string DownFile(CookieContainer myCookieContainer, string url, string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            if (!string.IsNullOrEmpty(dynamicUrl))
+            {
+                url = url.Replace("V12_12-7-07-000_B", dynamicUrl);
+            }
+
+            //var reqUrl = "https://v12.instantsoftware.com/V12login/V12Login.aspx";
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Get";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+
+
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    while (size > 0)
+                    {
+                        stream.Write(bArr, 0, size);
+                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    }
+                    stream.Close();
+
+                }
+            }
+
+            return path;
+        }
 
         protected string GetHtmlHiddenVaule(string responseString, string name)
         {

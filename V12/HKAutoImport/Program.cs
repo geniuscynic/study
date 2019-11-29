@@ -4,6 +4,7 @@ using PMSAutoImport;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,21 +20,28 @@ namespace HKAutoImport1
         {
             try
             {
-            //    string startDate = "05/14/2019 12:00 AM";
-            //    startDate = DateTime.Parse(startDate).ToShortDateString();
-            //    startDate = DateTime.Parse(startDate).AddDays(-5).ToString("MM/dd/yy");
+                //    string startDate = "05/14/2019 12:00 AM";
+                //    startDate = DateTime.Parse(startDate).ToShortDateString();
+                //    startDate = DateTime.Parse(startDate).AddDays(-5).ToString("MM/dd/yy");
                 //UnitFeaturesParse arrivalParse = new UnitFeaturesParse();
                 //arrivalParse.parse("002", "");
 
 
-                V12Import v13 = null;
-                v13 = new V12Import_STREAMLINE("21388");
-                v13.login();
-                v13.exportAndUpload();
+               // V12Import v13 = null;
+                //var v13 = new V12Import_STREAMLINE("21749");
+                //v13.login();
+                //v13.exportFile("");
+                // v13.CreateWorkOrder("154139", "test", "test2");
 
-                var companyId = "";
+                var companyId = "0";
+
+                
+                //if (ds.Tables[0].Rows.Count <= 0)
+                //{
+                //    return;
+                //}
+
                
-
 
                 if (args[0] == "17519")
                 {
@@ -76,12 +84,37 @@ namespace HKAutoImport1
                 {
                     companyId = args[0];
                 }
+                else if (args[0] == "21144")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "20591")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "21314")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "18148")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "21776")
+                {
+                    companyId = args[0];
+                }
+                else if (args[0] == "21810")
+                {
+                    companyId = args[0];
+                }
 
 
-               
-                
+
+
 
                 ezUpdaterServicesSoapClient ezClient = new ezUpdaterServicesSoapClient();
+
                 var companyId2 = int.Parse(ConfigurationManager.AppSettings[companyId + "CompanyId"]);
                 var clientId = int.Parse(ConfigurationManager.AppSettings[companyId + "OwnerCoId"]);
                 var formCoid = int.Parse(ConfigurationManager.AppSettings[companyId + "FormCoid"]);
@@ -91,7 +124,7 @@ namespace HKAutoImport1
 
                 var executionId = Guid.NewGuid().ToString();
                 ezClient.LogAutomationProgramStarted(executionId, 1, companyId2, 25, productCode, companyId2, ipAddress);
-                
+
                 try
                 {
                     V12Import v12 = null;
@@ -117,18 +150,27 @@ namespace HKAutoImport1
                         {
                             v12 = new V12Import_STREAMLINE(companyId);
                         }
+                        else if (args[2] == "ESCAPIA")
+                        {
+                            v12 = new SITE_ESCAPIA(companyId);
+                        }
+                        else if (args[2] == "ESCAPIA_VRMAIN")
+                        {
+                            v12 = new SITE_ESCAPIA(companyId);
+                        }
+
 
                         Console.WriteLine("begin autoImport.ImportJob " + companyId);
-                       // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "begin autoImport.ImportJob " + companyId);
+                        // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "begin autoImport.ImportJob " + companyId);
                         v12.login();
-                        v12.exportAndUpload();
-                       
+                        v12.exportAndUpload(args[2]);
+
                         // Run(autoImport.ImportJob4, companyId);
-                       // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "end autoImport.ImportJob " + companyId);
+                        // File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", "end autoImport.ImportJob " + companyId);
 
                         Console.WriteLine("end autoImport.ImportJob " + companyId);
                     }
-                    
+
                     else if (args[1] == "excelreport")
                     {
                         //Run(autoImport.ImportJob2, companyId);
@@ -138,13 +180,13 @@ namespace HKAutoImport1
                         //Run(autoImport.ImportJob3, companyId);
                     }
 
-                   
+
 
                 }
                 catch (Exception ex)
                 {
                     File.AppendAllText("Exception_" + DateTime.Now.ToString("yyyyMMdd") + ".txt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n" + ex.Message + "\r\n" + ex.StackTrace);
-                    ezClient.LogAutomationProgramResult(executionId, "F", ex.Message);
+                    //ezClient.LogAutomationProgramResult(executionId, "F", ex.Message);
                 }
                 ezClient.LogAutomationProgramResult(executionId, "S", "");
                 ezClient.UpdateJobProgress(companyId2, 25, productCode, companyId2, ipAddress, 1);
@@ -160,7 +202,7 @@ namespace HKAutoImport1
 
                 }
 
-                
+
             }
             catch (Exception ex)
             {

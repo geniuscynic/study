@@ -21,13 +21,30 @@ namespace PMSAutoImport
 
         String UserName = "";
         String Password = "";
-
+        int days = 14;
       
       
        
         public SITE_ESCAPIA(string companyId):base(companyId)
             
         {
+
+            //if (companyId == "19111")
+            //{
+            //    days = 10;
+            //}
+            //else if (companyId == "19205")
+            //{
+            //    days = 14;
+            //}
+            //else if (companyId == "20591")
+            //{
+            //    days = 7;
+            //}
+            //else if (companyId == "21314")
+            //{
+            //    days = 7;
+            //}
             var accountKey = companyId + "Account";
             string account = ConfigurationManager.AppSettings[accountKey];
             UserName = account.Split('|')[0];
@@ -38,7 +55,44 @@ namespace PMSAutoImport
                 case "21144":
                     domain = "https://beachprosrealty.escapia.com";
                     break;
+                case "20591":
+                
+                    domain = "https://sblvacations.escapia.com";
+                    days = 7;
+
+                    break;
+
+                case "21314":
+
+                    domain = "https://orlandoluxuryescapes.escapia.com";
+                    days = 7;
+
+                    break;
+                case "18148":
+
+                    domain = "https://remaxkauai.escapia.com";
+                    
+                    break;
+                
             }
+
+            //int days = 14;
+            //if (companyId == "19111")
+            //{
+            //    days = 10;
+            //}
+            //else if (companyId == "19205")
+            //{
+            //    days = 14;
+            //}
+            //else if (companyId == "20591")
+            //{
+            //    days = 7;
+            //}
+            //else if (companyId == "21314")
+            //{
+            //    days = 7;
+            //}
          }
 
        
@@ -49,7 +103,7 @@ namespace PMSAutoImport
             // string content = string.Format("UserName={0}&Password={1}&Persist=false", account, password);
             // content = string.Format(content, viewstate, viewstategenerator, eventvalidation, companyCode, login, password);
 
-            string responseString = PostRequest(buildUrl("/WebAgency/Account/LogOn?ReturnUrl=/webagency/"), content);
+            string responseString = PostRequest(buildUrl("/webagency/Account/LogOn?ReturnUrl=/webagency/"), content);
 
             var answer = "";
             if (responseString.Contains("What is the first name"))
@@ -67,18 +121,18 @@ namespace PMSAutoImport
             }
             string requestVerificationToken = GetHtmlHiddenVaule(responseString, "__RequestVerificationToken");
             content = string.Format("__RequestVerificationToken={0}&Answer=" + answer, requestVerificationToken);
-            responseString = PostRequest(buildUrl("/WebAgency/Account/SecurityQuestionChallenge?id=8831294&ReturnURL=/WebAgency/Default.aspx"), content);
+            responseString = PostRequest(buildUrl("/webagency/Account/SecurityQuestionChallenge?id=8831294&ReturnURL=/webagency/Default.aspx"), content);
 
 
-            responseString = GetRequest(buildUrl("/WebAgency/Housekeeping/Home"));
+            responseString = GetRequest(buildUrl("/webagency/Housekeeping/Home"));
         }
 
 
         private string exportMaintenance()
         {
-            var responseString = GetRequest(buildUrl("/WebAgency/ServiceOrder/ManageServiceOrders.aspx"));
+            var responseString = GetRequest(buildUrl("/webagency/ServiceOrder/ManageServiceOrders.aspx"));
 
-            var startDate = DateTime.Now.AddDays(-10).ToShortDateString().Replace("/", "%2F");
+            var startDate = DateTime.Now.AddDays(0).ToShortDateString().Replace("/", "%2F");
             var endDate = DateTime.Now.AddDays(0).ToShortDateString().Replace("/", "%2F");
 
             string viewstate = GetHtmlHiddenVaule(responseString, "__VIEWSTATE");
@@ -98,7 +152,7 @@ namespace PMSAutoImport
                 "&lstDateSearchMethod=0&dpStartDate={2}&dpEndDate={3}&btnExport="
                 , viewstate, viewstategenerator, startDate, startDate, sid, defaultBusinessEntityID, defaultBusinessEntity);
             
-            responseString = PostRequest(buildUrl("/WebAgency/ServiceOrder/ManageServiceOrders.aspx"), content);
+            responseString = PostRequest(buildUrl("/webagency/ServiceOrder/ManageServiceOrders.aspx"), content);
 
 
             var fileName = string.Format("{0}Maintenance_{1}.txt", importFolder, Guid.NewGuid().ToString());
@@ -106,16 +160,61 @@ namespace PMSAutoImport
 
             return fileName;
         }
-      
-        public override string exportFile()
-        {
 
-            addFile(() => exportMaintenance());
-            //addFile(() => exportHousekeepingCleaning());
-           // addFile(() => exportHousekeepingServicesSchedule());
+
+        public List<string> expotHK()
+        {
             
 
-            String fileName = "Job_" + Guid.NewGuid().ToString() + ".zip";
+            
+
+            var startDate = DateTime.Now.AddDays(-1).ToLongDateString().Replace(" ", "%20");
+            var responseString = "";
+
+            List<string> files = new List<string>();
+            for (int i = 0; i <= days; i++)
+            {
+                startDate = DateTime.Now.AddDays(i).ToLongDateString().Replace(" ", "%20");
+                responseString = GetRequest(buildUrl("/webagency/api/HousekeepingActivity/GetHousekeepingActivities?dateTime=" + startDate));
+                string fileName = i.ToString() + "_" + Guid.NewGuid().ToString() + ".txt";
+                File.WriteAllText(importFolder + fileName, responseString);
+
+                files.Add(importFolder + fileName);
+            }
+
+            return files;
+            //Housekeeping Arrival/Departure Report 
+           
+
+            //File.Copy(importFolder + fileName, fileName);
+            // LogInfo("===================Begin upload jobs==================");
+           
+            // LogInfo("===================End upload jobs==================");
+        }
+
+        public string exportArrivalsDeparturesReport()
+        {
+            var responseString = GetRequest(buildUrl("/webagency/Reports/Housekeeping/ArrivalsDeparturesReport.aspx#toolbar=0&pagemode=none"));
+            var downLoadUrl = string.Format("{0}/webagency/Reports/Housekeeping/ArrivalsDeparturesReport.aspx?Action=2&startDate={1}&endDate={2}&HousekeeperID=0&HousekeeperName=&LocationID=0&LocationName=&bookingStatus=255&officeID=0&showReservationNotes=false&showFlightInfo=false&lstSelect=0&lstSort=0&showHousekeepingNotes=false&showBookingHousekeepingNotes=false&isPopupDialog=1", domain, DateTime.Now.ToShortDateString(), DateTime.Now.AddDays(days).ToShortDateString());
+
+            var downloadFile = "Housekeeping_Arrivals_Departures_Report_" + Guid.NewGuid().ToString() + ".xlsx";
+            return DownFile(myCookieContainer, downLoadUrl, importFolder + downloadFile);
+            //fileNameList.Add(importFolder + downloadFile);
+        }
+        public override string exportFile(string type)
+        {
+            if (type == "ESCAPIA_VRMAIN")
+            {
+                addFile(() => exportMaintenance());
+            }
+            else
+            {
+                //addFile(() => exportMaintenance());
+                addFile(() => expotHK());
+                addFile(() => exportArrivalsDeparturesReport());
+            }
+
+            String fileName = "ESCA_" + Guid.NewGuid().ToString() + ".zip";
             CompressFile(fileNameList, importFolder + fileName);
 
             return fileName;
@@ -125,7 +224,7 @@ namespace PMSAutoImport
         public override void uploadFile(string fileName)
         {
 
-            UploadJobs("T", fileName, 0, "StreamlineImport");
+            UploadJobs("T", fileName, 0, "HK");
         }
 
         
