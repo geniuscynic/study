@@ -134,3 +134,9 @@ JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=
 1571236523576	Marionette	WARN	TLS certificate errors will be ignored for this session
 
 (/usr/lib/firefox/firefox:7806): dconf-WARNING **: 22:35:25.153: Unable to open /var/lib/snapd/desktop/dconf/profile/user: 权限不够
+JavaScript error: https://auokm1.auo.com/ContractSafetyMgt/ScriptResource.axd?d=ypTelWPlniZUNg5bsaOvqPIwWMipSMHBepiAtngiB8nCZnv7dbEDUuJnMs1BVqzkFa88YAgFnCApEq6pDOd3uyRTIUJkkq3Rxzui8HiC2bqwHN8Ly3aWrMok5BNAqtYW0pXmJd2DaSlnbtvhNQxH6A2&t=7f16157c:2, line 23790: Error: Sys.WebForms.PageRequestManagerServerErrorException: An unknown error occurred while processing the request on the server. The status code returned from the server was: 0
+[Parent 7679, Gecko_IOThread] WARNING: pipe error (129): 连接被对方重设: file /build/firefox-WlAST4/firefox-69.0.2+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 7679, Gecko_IOThread] WARNING: pipe error (73): 连接被对方重设: file /build/firefox-WlAST4/firefox-69.0.2+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 7679, Gecko_IOThread] WARNING: pipe error (107): 连接被对方重设: file /build/firefox-WlAST4/firefox-69.0.2+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+[Parent 7679, Gecko_IOThread] WARNING: pipe error (74): 连接被对方重设: file /build/firefox-WlAST4/firefox-69.0.2+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 358
+1571236972197	Marionette	INFO	Stopped listening on port 45533
