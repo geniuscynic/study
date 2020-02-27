@@ -79,12 +79,13 @@ def upload(name, photoUrl):
     browser.find_element_by_id("ctl00_contentBody_FileUpload1").send_keys(new_path)
     browser.find_element_by_id('ctl00_contentBody_Button1').click()
     time.sleep(1)
-    browser.find_element_by_id('ctl00_contentBody_BtnDone').click()
+    #browser.find_element_by_id('ctl00_contentBody_BtnDone').click()
+    browser.find_element_by_id('ctl00_contentBody_Button2').click()
     time.sleep(1)
-    dig_alert = browser.switch_to.alert
-    time.sleep(1)
-    dig_alert.accept()
-    time.sleep(1)
+    # dig_alert = browser.switch_to.alert
+    # time.sleep(1)
+    # dig_alert.accept()
+    # time.sleep(1)
     #os.remove(new_path)
     browser.switch_to.window(current_handle)
     time.sleep(1)
