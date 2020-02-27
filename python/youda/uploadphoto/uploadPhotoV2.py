@@ -52,6 +52,12 @@ def findNeedUploadUrl():
         name = element.find_element_by_xpath('../preceding-sibling::td[6]').text.strip()
         new_url = element.get_attribute('href')
         listUrl.append(new_url)
+
+        new_path = current_dir + name + '.xlsx'
+        if not (os.path.exists(new_path)):
+            print("文件不存在", name)
+            continue
+
         return new_url, name
 
     return "", ""
