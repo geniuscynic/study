@@ -79,11 +79,20 @@ namespace PMSAutoImport
 
         public void getReservations(string token)
         {
-            var postUrl = url + "/api/pms/reservations/?updatedSince=2019-09-01";
+            var postUrl = url + "/api/pms/reservations/?updatedSince=2019-12-01";
+            var result = GetRequest(postUrl, buildHeader(token));
+
+            var a = "";
+        }
+
+        public void UpdateCleanStatus(string token)
+        {
+            var postUrl = url + "/api/pms/housekeeping/work-orders/503/";
             var result = GetRequest(postUrl, buildHeader(token));
 
             var a = "";
         } 
+
 
         public Dictionary<string, string> buildHeader(string token)
         {
@@ -103,6 +112,7 @@ namespace PMSAutoImport
            // getServiceManagerIssueWorkOrders(token);
            // getTasks(token);
            //getUnits(token);
+           UpdateCleanStatus(token);
            getReservations(token);
            // getVendors(token);
             //addFile(() => exportPropertyList());

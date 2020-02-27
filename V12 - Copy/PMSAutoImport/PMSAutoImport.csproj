@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="api\tmp_HKImport.cs" />
     <Compile Include="request\V12Import_HK_REQUEST.cs" />
+    <Compile Include="request\SITE_HK.cs" />
     <Compile Include="request\V12Import_HK_UnitFeature.cs" />
     <Compile Include="api\V12Import_PointCentral.cs" />
     <Compile Include="api\V12Import_HOSTFULLY.cs" />

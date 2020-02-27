@@ -93,7 +93,7 @@ namespace PMSAutoImport
         private string exportHousekeepingCleaning()
         {
             var startDate = DateTime.Now .ToShortDateString();
-            var endDate = DateTime.Now.AddDays(14).ToShortDateString();
+            var endDate = DateTime.Now.AddDays(60).ToShortDateString();
 
             //if (companyId == "21388" || companyId == "21799" || companyId == "21810")
             //{
@@ -480,6 +480,60 @@ namespace PMSAutoImport
 
         }
 
+        public string GetReservationInfo(string confirmationId)
+        {
+            var jsonObject = new
+            {
+                methodName = "GetReservationInfo",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    confirmation_id = confirmationId,
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+        }
+
+        public string GetReservations()
+        {
+            var startDate = DateTime.Now .ToShortDateString();
+            var endDate = DateTime.Now.AddDays(60).ToShortDateString();
+
+            var jsonObject = new
+            {
+                methodName = "GetReservations",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    return_full = "Y",
+                    arriving_before = endDate,
+                    arriving_after = startDate,
+                    
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            var fileName = string.Format("{0}GetReservations_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            File.WriteAllText(fileName, result);
+
+            return fileName;
+        }
+
+
         public override string exportFile()
         {
             //LogHoursForWorkOrder();
@@ -493,11 +547,15 @@ namespace PMSAutoImport
            // exportWorkOrders();
             //RenewExpiredToken();
             //addFile(() => exportWorkOrders());
-            if (companyId != "21776")
-            {
+            //if (companyId != "21776")
+            //{
                 addFile(() => exportPropertyList());
-            }
+            //}
             addFile(() => exportHousekeepingCleaning());
+            if (companyId == "21767")
+            {
+                addFile(() => GetReservations());
+            }
            // addFile(() => exportHousekeepingServicesSchedule());
             
 

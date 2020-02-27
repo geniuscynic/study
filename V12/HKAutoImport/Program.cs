@@ -27,15 +27,18 @@ namespace HKAutoImport1
                 //arrivalParse.parse("002", "");
 
 
-               // V12Import v13 = null;
-                //var v13 = new V12Import_STREAMLINE("21749");
-                //v13.login();
-                //v13.exportFile("");
-                // v13.CreateWorkOrder("154139", "test", "test2");
+                //V12Import v13 = null;
+                var v13 = new SITE_ESCAPIA("22167");
+                v13.login();
+                //v13.RenewExpiredToken();
+                //v13.GetReservations();
+                //v13.SetHousekeepingUnitStatus("154139", "1", "437144");
+                v13.exportFile("");
+                //v13.CreateWorkOrder("154139", "test", "test2");
 
                 var companyId = "0";
 
-                
+                //{"data":{"token_key":"6ffd699d548bb755996798943ea8575c","token_secret":"857a2526bc43a46488f38d3a059685de356feab7","startdate":"02\/02\/2020","enddate":"05\/02\/2020"}}
                 //if (ds.Tables[0].Rows.Count <= 0)
                 //{
                 //    return;

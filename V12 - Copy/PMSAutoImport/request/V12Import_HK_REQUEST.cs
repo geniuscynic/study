@@ -149,6 +149,128 @@ namespace PMSAutoImport
         }
 
 
+        protected string DownFile(string url, string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            url = buildUrl(url);
+
+            //var reqUrl = domain +"/V12login/V12Login.aspx";
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Get";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+
+
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    while (size > 0)
+                    {
+                        stream.Write(bArr, 0, size);
+                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    }
+                    stream.Close();
+
+                }
+            }
+
+            return path;
+        }
+
+        protected string DownFile(string url, string content, string path)
+        {
+            url = buildUrl(url);
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Post";
+            request.ContentType = "application/x-www-form-urlencoded;";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
+            request.CookieContainer = myCookieContainer;
+            request.AllowAutoRedirect = true;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                byte[] contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+            }
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    Stream stream = new FileStream(path, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    while (size > 0)
+                    {
+                        stream.Write(bArr, 0, size);
+                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                    }
+                    stream.Close();
+
+                }
+            }
+
+            return path;
+        }
+
+        protected string PostJson(string url, string content, string xid, string uid, string coid)
+        {
+            url = buildUrl(url);
+
+            //var reqUrl = ;
+            Thread.Sleep(500);
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Method = "Post";
+            request.ContentType = "application/json";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64)";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+            request.Headers.Add("X-NewRelic-ID", xid);
+            request.Headers.Add("UserId", uid);
+            request.Headers.Add("COID", coid);
+            request.CookieContainer = myCookieContainer;
+            request.AllowAutoRedirect = true;
+
+            using (Stream requestStream = request.GetRequestStream())
+            {
+                byte[] contentBytes = System.Text.Encoding.UTF8.GetBytes(content);
+
+                requestStream.Write(contentBytes, 0, contentBytes.Length);
+            }
+
+            string resultStr = "";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    resultStr = reader.ReadToEnd();
+                }
+            }
+            return resultStr;
+        }
+
         protected string GetHtmlHiddenVaule(string responseString, string name)
         {
             var matchString = GetHtmlHiddenVaule1(responseString, name);
