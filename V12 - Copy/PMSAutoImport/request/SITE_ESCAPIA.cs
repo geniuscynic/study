@@ -76,6 +76,19 @@ namespace PMSAutoImport
                     domain = "https://remaxkauai.escapia.com";
                     
                     break;
+
+                case "22114":
+
+                    domain = "https://carolinamtn.escapia.com";
+                    days = 7;
+
+                    break;
+
+                case "22167":
+
+                    domain = "https://mareazul.escapia.com";
+
+                    break;
                 
             }
 
@@ -204,6 +217,17 @@ namespace PMSAutoImport
             return DownFile(myCookieContainer, downLoadUrl, importFolder + downloadFile);
             //fileNameList.Add(importFolder + downloadFile);
         }
+
+        public string exportBookingSummaryReport()
+         {
+            var responseString = GetRequest(buildUrl("/webagency/Reports/Reservation/BookingSummaryReport.aspx#toolbar=0"));
+            var downLoadUrl = string.Format("{0}/webagency/Reports/Reservation/BookingSummaryReport.aspx?Action=1&agentID=0&startDate={1}&endDate={2}&dateType=0&PropertyID=0&generalMarketingID=-1&marketingInitiativeID=-1&SortOrder=0&OfficeID=0&reservationNotes=false&reservationInfo=false&isPopupDialog=1", domain, DateTime.Now.ToShortDateString(), DateTime.Now.AddDays(days).ToShortDateString());
+
+            var downloadFile = "Booking_Summary_Report_" + Guid.NewGuid().ToString() + ".xlsx";
+            return DownFile(myCookieContainer, downLoadUrl, importFolder + downloadFile);
+            //fileNameList.Add(importFolder + downloadFile);
+        }
+
         public override string exportFile()
         {
             if (productCode == "ESCAPIA_VRMAIN")
@@ -215,6 +239,11 @@ namespace PMSAutoImport
                 //addFile(() => exportMaintenance());
                 addFile(() => expotHK());
                 addFile(() => exportArrivalsDeparturesReport());
+
+                if (companyId == "22114" || companyId == "22167")
+                {
+                    addFile(() => exportBookingSummaryReport());
+                }
             }
 
             String fileName = "ESCA_" + Guid.NewGuid().ToString() + ".zip";

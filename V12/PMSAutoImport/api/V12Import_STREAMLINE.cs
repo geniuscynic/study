@@ -44,7 +44,7 @@ namespace PMSAutoImport
         }
 
 
-        private string RenewExpiredToken()
+        public  string RenewExpiredToken()
         {
             var jsonObject = new
             {
@@ -90,13 +90,13 @@ namespace PMSAutoImport
 
         private string exportHousekeepingCleaning()
         {
-            var startDate = DateTime.Now.AddDays(-7).ToShortDateString();
-            var endDate = DateTime.Now.AddDays(7).ToShortDateString();
+            var startDate = DateTime.Now.AddDays(0).ToShortDateString();
+            var endDate = DateTime.Now.AddDays(60).ToShortDateString();
 
-            if (companyId == "21388")
-            {
-                endDate = DateTime.Now.AddDays(14).ToShortDateString();
-            }
+            //if (companyId == "21388")
+            //{
+            //    endDate = DateTime.Now.AddDays(14).ToShortDateString();
+            //}
 
             var jsonObject = new
             {
@@ -277,7 +277,33 @@ namespace PMSAutoImport
         public string GetProcessorsVerdor(string inspectorName)
         {
 
-            var result = GetProcessors("0", "Vendor", "");
+            //var result = GetProcessors("0", "Vendor", "");
+
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+
+            //JArray jarray = (JArray)jobject["data"]["processors"];
+
+            //foreach (JToken jtoken in jarray)
+            //{
+            //    var repName = jtoken["first_name"].ToString();
+            //    if (jtoken["last_name"].ToString() != "{}")
+            //    {
+            //        repName += " " + jtoken["last_name"].ToString();
+            //    }
+
+            //    if (repName.Trim().ToLower() == inspectorName.ToLower())
+            //    {
+            //        return jtoken["id"].ToString();
+            //    }
+            //}
+
+            return GetProcessors(inspectorName, "Vendor");
+        }
+
+        public string GetProcessors(string inspectorName, string roleName)
+        {
+
+            var result = GetProcessors("0", roleName, "");
 
             JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
 
@@ -298,6 +324,34 @@ namespace PMSAutoImport
             }
 
             return "0";
+        }
+
+        public string GetReservations()
+        {
+            var startDate = DateTime.Now.AddDays(0).ToShortDateString();
+            var endDate = DateTime.Now.AddDays(14).ToShortDateString();
+
+            var jsonObject = new
+            {
+                methodName = "GetReservations",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    arriving_before = endDate,
+                    arriving_after =  startDate ,
+                    return_full = "Y",
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
         }
 
         public string GetReservationInfo(string confirmationId)
@@ -323,10 +377,11 @@ namespace PMSAutoImport
             //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
         }
 
-        public string CreateWorkOrder(string unitId, string title, string description, string repName, string dueDate)
+        public string CreateWorkOrder(string unitId, string title, string description, string repName, string dueDate, string priorityName)
         {
 
             var verdorId = GetProcessorsVerdor(repName);
+            var priorityId = GetMaintenancePriorities(priorityName);
             var jsonObject = new
             {
                 methodName = "CreateWorkOrder",
@@ -339,7 +394,9 @@ namespace PMSAutoImport
                     title = title,
                     description = description,
                     vendor_id = verdorId,
-                    expected_completion_date = dueDate
+                    expected_completion_date = dueDate,
+                    priority_id = priorityId,
+                    status_id = 1
                  }
 
             };
@@ -593,6 +650,95 @@ namespace PMSAutoImport
 
         }
 
+
+        private string GetMaintenancePriorities(string priorityName)
+        {
+            if (priorityName == "Urgent")
+            {
+                priorityName = "Critical";
+            }
+            else if (priorityName == "High")
+            {
+                priorityName = "Medium";
+            }
+            
+
+            var jsonObject = new
+            {
+                methodName = "GetMaintenancePriorities",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+
+
+            var dict = new Dictionary<string, string>();
+            try
+            {
+                JArray priorities = (JArray)jobject["data"]["maintenance_priorities"]["maintenance_priority"];
+
+                foreach (var priority in priorities)
+                {
+                    var id = priority["id"].ToString ();
+                    var name = priority["name"].ToString();
+
+                    if (name == priorityName)
+                    {
+                        return id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
+
+            //var fileName = string.Format("{0}workorder_{1}.txt", importFolder, Guid.NewGuid().ToString());
+            //File.WriteAllText(fileName, result);
+
+            return "0";
+
+        }
+
+        public string SetHousekeepingUnitStatus(string unidId, string statusId, string housekeeper_id)
+        {
+            //3 pending
+            //6001 clean
+            //6002 Occupied
+            //6003 clean
+            //6004 Dirty
+            var jsonObject = new
+            {
+                methodName = "SetHousekeepingUnitStatus",
+                @params = new
+                {
+                    token_key = TokenKey,
+                    token_secret = TokenSecretKey,
+                    unit_id = unidId,
+                    housekeeping_status_id = statusId,
+                    housekeeper_id = housekeeper_id
+
+                }
+
+            };
+
+            string json = JsonConvert.SerializeObject(jsonObject);
+
+            var result = PostRequest(url, json);
+
+            return result;
+            //JObject jobject = (JObject)JsonConvert.DeserializeObject(result);
+        }
+
         public override string exportFile(string type)
         {
             //LogHoursForWorkOrder();
@@ -606,6 +752,8 @@ namespace PMSAutoImport
             //exportWorkOrders();
             //RenewExpiredToken();
             //addFile(() => exportWorkOrders());
+            //RenewExpiredToken();
+            //GetMaintenancePriorities();
             addFile(() => exportPropertyList());
             addFile(() => exportHousekeepingCleaning());
            // addFile(() => exportHousekeepingServicesSchedule());

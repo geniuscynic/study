@@ -169,7 +169,7 @@ namespace PMSAutoImport
             int duplicated = 0;
             int failed = 0;
             ezUpdaterServicesSoapClient client = new ezUpdaterServicesSoapClient();
-
+            
             string importationResult = client.ImportFiles(0, int.Parse(companyId), int.Parse(ownerCoid), int.Parse(formCoid), productCode, fileType, fileName, true, false, 0);
             XmlDocument importationResultXml = new XmlDocument();
             importationResultXml.LoadXml(importationResult);
@@ -179,7 +179,8 @@ namespace PMSAutoImport
             int.TryParse(importationResultXml.SelectSingleNode("/ImportLogDataSet/ImportLog/Failed").InnerText, out failed);
 
 
-            File.AppendAllText(DateTime.Now.ToString("yyyyMMdd") + ".txt", importationResult);
+            client.Close();
+            //File.AppendAllText(DateTime.Now.ToString("yyyyMMdd") + ".txt", importationResult);
 
             Console.WriteLine("===================End upload jobs==================");
 

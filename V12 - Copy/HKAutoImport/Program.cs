@@ -23,7 +23,7 @@ namespace HKAutoImport1
                
 
                 var companyId = args[0];
-                //var companyId = "21810";
+                //var companyId = "22114";
 
                 ezUpdaterServicesSoapClient ezClient = new ezUpdaterServicesSoapClient();
                 var ds = ezClient.GetV12PassWord(int.Parse(companyId));

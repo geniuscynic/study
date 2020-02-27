@@ -22,8 +22,8 @@ namespace PMSAutoImport
         private string exportAddOnsSold() {
             var startDate = "9/27/2017"; //new DateTime(DateTime.Today.Year, 1, 1).ToShortDateString().Replace("/", "%2F");
             var throughDate = DateTime.Today.AddDays(0).ToShortDateString();
-            var staysFromDate = DateTime.Today.AddDays(3).ToShortDateString();
-            var staysThroughDate = DateTime.Today.AddDays(4).ToShortDateString();
+            var staysFromDate = DateTime.Today.AddDays(2).ToShortDateString();
+            var staysThroughDate = DateTime.Today.AddDays(5).ToShortDateString();
             //var throughDate = DateTime.Today.AddDays(1).ToShortDateString();
             //var staysFromDate = DateTime.Today.AddDays(4).ToShortDateString();
             //var staysThroughDate = DateTime.Today.AddDays(5).ToShortDateString();
