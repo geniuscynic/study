@@ -9,7 +9,7 @@ def chaifen():
 
     #filename = "D:\\workplace\\git\\study\\python\\youda\\biaogechaifen\\14.xls"    
 
-    filename =  "D:\\workplace\\git\\study\\python\\youda\\biaogechaifen\\13.xls"    
+    filename =  "D:\\workplace\\git\\study\\python\\youda\\biaogechaifen\\11.xls"    
 
     xlBook = xlApp.Workbooks.Open(filename)
 
