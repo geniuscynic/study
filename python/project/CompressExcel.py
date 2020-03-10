@@ -3,8 +3,8 @@ from util.Utils import Utils
 from util.MyLogger import MyLogger
 from util.CompressImage import compress_image
 
-fileName = "process/test.xlsx"
-newFileName = fileName.replace("xlsx", "zip")
+fileName = "process/入厂名册S06.xls"
+newFileName = fileName.replace("xls", "zip")
 
 if(os.path.exists(fileName)):
     os.rename(fileName, newFileName)
